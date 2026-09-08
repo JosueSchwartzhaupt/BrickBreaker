@@ -1,8 +1,10 @@
 package com.josuesch;
 
 
+import com.josuesch.entities.Ball;
 import com.josuesch.entities.Entity;
 import com.josuesch.entities.Player;
+import com.josuesch.entities.Wall;
 
 import javax.swing.JFrame;
 import java.awt.Canvas;
@@ -25,7 +27,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     public static final int WIDTH = 200;
     public static final int HEIGHT = 200;
-    public static final int SCALE = 4;
+    public static final int SCALE = 3;
+
+    public static Random random;
 
     private BufferedImage image;
 
@@ -34,6 +38,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
     public static List<Entity> entities;
 
     public Game() {
+        random = new Random();
         addKeyListener(this);
         setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
         initFrame();
@@ -44,6 +49,15 @@ public class Game extends Canvas implements Runnable, KeyListener {
         entities = new ArrayList<Entity>();
         player = new Player(100,180,32,8);
         entities.add(player);
+
+        //TODO
+        entities.add(new Wall(-5,-5,10,HEIGHT));
+        entities.add(new Wall(-5,-5,WIDTH,10));
+        entities.add(new Wall(-5+ HEIGHT,0,10,HEIGHT));
+        entities.add(new Wall(0,-5+ WIDTH,WIDTH,10));
+        for (int i = 0; i < 20; i++) {
+            entities.add(new Ball(10+10*i,10,5,5, Math.toRadians(Game.random.nextInt(360))));
+        }
     }
 
     public void initFrame()
@@ -101,7 +115,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
             }
             if(System.currentTimeMillis()-timer>=1000)
             {
-                System.out.println("FPS: "+frames);
+               // System.out.println("FPS: "+frames);
                 frames=0;
                 timer+=1000;
             }
@@ -160,6 +174,15 @@ public class Game extends Canvas implements Runnable, KeyListener {
                 e.getKeyCode() == KeyEvent.VK_A) {
             player.setLeft(true);
         }
+
+//        if (e.getKeyCode() == KeyEvent.VK_UP ||
+//                e.getKeyCode() == KeyEvent.VK_W) {
+//            player.setUp(true);
+//        }
+//        if (e.getKeyCode() == KeyEvent.VK_DOWN ||
+//                e.getKeyCode() == KeyEvent.VK_S) {
+//            player.setDown(true);
+//        }
     }
 
     @Override
@@ -172,5 +195,14 @@ public class Game extends Canvas implements Runnable, KeyListener {
                 e.getKeyCode() == KeyEvent.VK_A) {
             player.setLeft(false);
         }
+
+//        if (e.getKeyCode() == KeyEvent.VK_UP ||
+//                e.getKeyCode() == KeyEvent.VK_W) {
+//            player.setUp(false);
+//        }
+//        if (e.getKeyCode() == KeyEvent.VK_DOWN ||
+//                e.getKeyCode() == KeyEvent.VK_S) {
+//            player.setDown(false);
+//        }
     }
 }
