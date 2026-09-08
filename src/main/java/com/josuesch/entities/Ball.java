@@ -8,13 +8,13 @@ import com.josuesch.assets.Movable;
 import static com.josuesch.Game.entities;
 
 public class Ball extends Entity implements Movable {
-    private static final int NATURAL_SPEED = 1;
+    private static final double NATURAL_SPEED = 1;
 
-    private int speed = NATURAL_SPEED;
     private double angle;
 
     public Ball(double x, double y, int width, int height, double angle) {
         super(x, y, width, height);
+        speed = NATURAL_SPEED;
         this.angle = angle;
     }
 

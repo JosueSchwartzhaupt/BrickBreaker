@@ -8,7 +8,7 @@ import java.awt.Graphics;
 import static com.josuesch.Game.entities;
 
 public class Player extends Entity implements Movable {
-    private static final int NATURAL_SPEED = 2;
+    private static final double NATURAL_SPEED = 2;
 
     private boolean right,up,left,down;
 

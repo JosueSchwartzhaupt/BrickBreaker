@@ -14,7 +14,7 @@ public abstract class Entity implements Drawable, Placeble {
     protected int width;
     protected int height;
 
-    protected int speed;
+    protected double speed;
     protected double dx;
     protected double dy;
 
