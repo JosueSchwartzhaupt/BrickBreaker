@@ -1,9 +1,17 @@
 package com.josuesch.entities;
 
+import com.josuesch.Game;
 import com.josuesch.assets.HitboxComparator;
 import com.josuesch.assets.Movable;
+import com.josuesch.assets.Placeble;
+import com.josuesch.world.WallTile;
+import com.josuesch.world.World;
 
-import java.awt.Graphics;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.josuesch.Game.entities;
 
@@ -30,7 +38,12 @@ public class Player extends Entity implements Movable {
 
         double relativeSpeed = speed;
         //TODO
-        for (Entity e : entities) {
+        List<Placeble> list = new java.util.ArrayList<>(Arrays.stream(World.getTiles())
+                .filter(tile -> tile instanceof WallTile)
+                .map(tile -> (Placeble) tile) // Casts the filtered tiles to your interface
+                .toList());
+        list.addAll(entities);
+        for (Placeble e : list) {
             if(e.equals(this)) continue;
             //if(e instanceof Ball) continue;
             relativeSpeed = Math.min(relativeSpeed,HitboxComparator.getMaxSpeed(this, e));

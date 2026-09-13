@@ -4,6 +4,12 @@ import com.josuesch.Game;
 import com.josuesch.assets.Direction;
 import com.josuesch.assets.HitboxComparator;
 import com.josuesch.assets.Movable;
+import com.josuesch.assets.Placeble;
+import com.josuesch.world.WallTile;
+import com.josuesch.world.World;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static com.josuesch.Game.entities;
 
@@ -24,7 +30,12 @@ public class Ball extends Entity implements Movable {
         boolean willBounce = false;
         Direction wallToBounce = null;
         //TODO
-        for (Entity e : entities) {
+        List<Placeble> list = new java.util.ArrayList<>(Arrays.stream(World.getTiles())
+                .filter(tile -> tile instanceof WallTile)
+                .map(tile -> (Placeble) tile) // Casts the filtered tiles to your interface
+                .toList());
+        list.addAll(entities);
+        for (Placeble e : list) {
             if(e.equals(this)) continue;
            // if(e instanceof Ball) continue;
             double maxSpeed = HitboxComparator.getMaxSpeed(this, e);

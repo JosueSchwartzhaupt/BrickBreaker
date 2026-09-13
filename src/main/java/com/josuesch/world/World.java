@@ -1,4 +1,91 @@
 package com.josuesch.world;
 
+import com.josuesch.Game;
+
+import javax.imageio.ImageIO;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class World {
+
+    private static Tile[] tiles;
+    public static int WIDTH, HEIGHT;
+
+    public World(String path)
+    {
+        try {
+            BufferedImage map = ImageIO.read(getClass().getResource(path));
+            WIDTH=map.getWidth();
+            HEIGHT=map.getHeight();
+            int[] pixels = new int[WIDTH* HEIGHT];
+            tiles=new Tile[WIDTH*HEIGHT];
+            map.getRGB(0, 0, WIDTH, HEIGHT, pixels, 0, WIDTH);
+            for(int xx=0;xx<WIDTH;xx++)
+            {
+                for(int yy=0;yy<HEIGHT;yy++)
+                {
+                    switch (pixels[xx+(yy*WIDTH)])
+                    {
+                        case 0xFFFFFFFF://Wall
+                            tiles[xx+(yy*WIDTH)] = new WallTile(xx*16, yy*16, Tile.TILE_WALL);
+                            break;
+                        case 0xFF000000://Floor
+                            tiles[xx+(yy*WIDTH)] = new FloorTile(xx*16, yy*16,Tile.TILE_FLOOR,new Random().nextInt(4));
+                            break;
+                        case 0xFF0026FF://Player
+                            tiles[xx+(yy*WIDTH)] = new FloorTile(xx*16, yy*16,Tile.TILE_FLOOR,new Random().nextInt(4));
+                            Game.player.setX(xx*16);
+                            Game.player.setY(yy*16);
+                            break;
+                        case 0xFFFF6A00:
+                            tiles[xx+(yy*WIDTH)] = new FloorTile(xx*16, yy*16, Tile.TILE_FLOOR, new Random().nextInt(4));
+                            break;
+                        case 0xFF4CFF00:
+                            tiles[xx+(yy*WIDTH)] = new FloorTile(xx*16,yy*16,Tile.TILE_FLOOR,new Random().nextInt(4));
+                            break;
+                        case 0xFF7F3300:
+                            tiles[xx+(yy*WIDTH)] = new FloorTile(xx*16,yy*16,Tile.TILE_FLOOR,new Random().nextInt(4));
+                            break;
+                        case 0xFFFFD800:
+                            tiles[xx+(yy*WIDTH)] = new FloorTile(xx*16,yy*16,Tile.TILE_FLOOR,new Random().nextInt(4));
+                            break;
+                    }
+                }
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void render(Graphics g)
+    {
+        //TODO
+        int xstart = 0 >> 4;
+        int ystart = 0 >> 4;
+
+        int xfinal = xstart + (Game.WIDTH >> 4) + 1;
+        int yfinal = ystart + (Game.HEIGHT >> 4) + 1;
+
+        for(int xx=xstart;xx<=xfinal;xx++)
+        {
+            for(int yy=ystart;yy<=yfinal;yy++)
+            {
+                if (xx < 0 || yy < 0 || xx >= WIDTH || yy >= HEIGHT) continue;
+                Tile tile = tiles[xx+(yy*WIDTH)];
+                tile.render(g);
+            }
+
+        }
+
+    }
+
+    // TODO
+    public static Tile[] getTiles() {
+        return tiles;
+    }
 }

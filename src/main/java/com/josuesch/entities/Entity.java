@@ -50,6 +50,14 @@ public abstract class Entity implements Drawable, Placeble {
         return y;
     }
 
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
     @Override
     public int getWidth() {
         return width;

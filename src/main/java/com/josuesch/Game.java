@@ -5,6 +5,8 @@ import com.josuesch.entities.Ball;
 import com.josuesch.entities.Entity;
 import com.josuesch.entities.Player;
 import com.josuesch.entities.Wall;
+import com.josuesch.graphics.Spritesheet;
+import com.josuesch.world.World;
 
 import javax.swing.JFrame;
 import java.awt.Canvas;
@@ -25,9 +27,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
     private boolean isRunning = false;
     private static JFrame frame;
 
-    public static final int WIDTH = 200;
-    public static final int HEIGHT = 200;
-    public static final int SCALE = 3;
+    public static final int WIDTH = 272;
+    public static final int HEIGHT = 336;
+    public static final int SCALE = 2;
 
     public static Random random;
 
@@ -36,6 +38,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
     public static Player player;
 
     public static List<Entity> entities;
+    public static Spritesheet spritesheet;
+    public static World world;
 
     public Game() {
         random = new Random();
@@ -47,17 +51,22 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
         // Cria a tela de fundo onde vamos desenhar tudo;
         entities = new ArrayList<Entity>();
+        spritesheet = new Spritesheet("/spritesheet.png");
         player = new Player(100,180,32,8);
         entities.add(player);
+        world = new World("/map.png");
 
         //TODO
+        /*
         entities.add(new Wall(-5,-5,10,HEIGHT));
         entities.add(new Wall(-5,-5,WIDTH,10));
         entities.add(new Wall(-5+ HEIGHT,0,10,HEIGHT));
         entities.add(new Wall(0,-5+ WIDTH,WIDTH,10));
+        */
         for (int i = 0; i < 20; i++) {
-            entities.add(new Ball(10+10*i,10,5,5, Math.toRadians(Game.random.nextInt(360))));
+            entities.add(new Ball(32+10*i,32,5,5, Math.toRadians(Game.random.nextInt(360))));
         }
+
     }
 
     public void initFrame()
@@ -146,6 +155,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
         g.setColor(new Color(0,0,0));
         g.fillRect(0,0,  WIDTH  ,  HEIGHT);
 
+        world.render(g);
+
         for (Entity e : entities) {
             e.render(g);
         }
@@ -153,7 +164,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
         g.dispose();
         g = bs.getDrawGraphics();
         //bota essa tela de fundo no buffer(escalando para a tela)
-        g.drawImage(image, 0, 0, WIDTH*SCALE, HEIGHT*SCALE,null);
+        g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT*SCALE,null);
 
         bs.show();
     }
