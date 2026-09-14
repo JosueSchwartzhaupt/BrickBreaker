@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 import static com.josuesch.Game.entities;
 
 public class Player extends Entity implements Movable {
-    private static final double NATURAL_SPEED = 2;
+    private static final double NATURAL_SPEED = 3;
 
     private boolean right,up,left,down;
 

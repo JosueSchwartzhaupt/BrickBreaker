@@ -1,5 +1,6 @@
 package com.josuesch.entities;
 
+import com.josuesch.Game;
 import com.josuesch.assets.Drawable;
 import com.josuesch.assets.Placeble;
 
@@ -34,6 +35,11 @@ public abstract class Entity implements Drawable, Placeble {
 
     public void tick(){
 
+    }
+
+    //TODO
+    public void dispawn(){
+        Game.entities.remove(this);
     }
 
     public void render(Graphics g) {

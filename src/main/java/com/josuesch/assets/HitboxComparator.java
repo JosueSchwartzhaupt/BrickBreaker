@@ -94,10 +94,10 @@ public class HitboxComparator {
         double left = m.getX() - (p.getX() + p.getWidth());
         double down = p.getY() - (m.getY() + m.getHeight());
         double up = m.getY() - (p.getY() + p.getHeight());
-        right = right > 0 ? right : Double.MAX_VALUE;
-        left = left > 0 ? left : Double.MAX_VALUE;
-        down = down > 0 ? down : Double.MAX_VALUE;
-        up = up > 0 ? up : Double.MAX_VALUE;
+        right = right >= 0 ? right : Double.MAX_VALUE;
+        left = left >= 0 ? left : Double.MAX_VALUE;
+        down = down >= 0 ? down : Double.MAX_VALUE;
+        up = up >= 0 ? up : Double.MAX_VALUE;
 
         double min = Math.min(Math.min(right, left), Math.min(down, up));
         if(min == right) return Direction.RIGHT;

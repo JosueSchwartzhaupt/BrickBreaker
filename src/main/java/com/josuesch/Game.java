@@ -41,6 +41,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
     public static Spritesheet spritesheet;
     public static World world;
 
+    public static boolean hasStarted = false;
+
     public Game() {
         random = new Random();
         addKeyListener(this);
@@ -63,9 +65,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
         entities.add(new Wall(-5+ HEIGHT,0,10,HEIGHT));
         entities.add(new Wall(0,-5+ WIDTH,WIDTH,10));
         */
-        for (int i = 0; i < 20; i++) {
-            entities.add(new Ball(32+10*i,32,5,5, Math.toRadians(Game.random.nextInt(360))));
-        }
+       // for (int i = 0; i < 20; i++) {
+       //     entities.add(new Ball(32 + 10/* *i*/,32,5,5, Math.toRadians(90/*Game.random.nextInt(360)*/)));
+       // }
 
     }
 
@@ -135,7 +137,13 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     public void tick()
     {
-        for (Entity e : entities) {
+//        for (Entity e : entities) {
+//            e.tick();
+//        }
+        //TODO
+        for(int i=0;i< entities.size(); i++)
+        {
+            Entity e= entities.get(i);
             e.tick();
         }
     }
@@ -177,13 +185,21 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT ||
-                e.getKeyCode() == KeyEvent.VK_D) {
-            player.setRight(true);
+        if(!hasStarted){
+            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                entities.add(new Ball(player.getX() + player.getWidth() / 2.0 - 2, player.getY(), 5, 5, Math.toRadians(270)));
+                hasStarted = true;
+            }
         }
-        if (e.getKeyCode() == KeyEvent.VK_LEFT ||
-                e.getKeyCode() == KeyEvent.VK_A) {
-            player.setLeft(true);
+        else{
+            if (e.getKeyCode() == KeyEvent.VK_RIGHT ||
+                    e.getKeyCode() == KeyEvent.VK_D) {
+                player.setRight(true);
+            }
+            if (e.getKeyCode() == KeyEvent.VK_LEFT ||
+                    e.getKeyCode() == KeyEvent.VK_A) {
+                player.setLeft(true);
+            }
         }
 
 //        if (e.getKeyCode() == KeyEvent.VK_UP ||

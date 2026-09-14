@@ -1,6 +1,7 @@
 package com.josuesch.world;
 
 import com.josuesch.Game;
+import com.josuesch.entities.Block;
 
 import javax.imageio.ImageIO;
 import java.awt.Graphics;
@@ -41,8 +42,9 @@ public class World {
                             Game.player.setX(xx*16);
                             Game.player.setY(yy*16);
                             break;
-                        case 0xFFFF6A00:
+                        case 0xFFFF6A00://EasyBlock
                             tiles[xx+(yy*WIDTH)] = new FloorTile(xx*16, yy*16, Tile.TILE_FLOOR, new Random().nextInt(4));
+                            Game.entities.add(new Block(xx*16, yy*16, 16, 16, 1));
                             break;
                         case 0xFF4CFF00:
                             tiles[xx+(yy*WIDTH)] = new FloorTile(xx*16,yy*16,Tile.TILE_FLOOR,new Random().nextInt(4));

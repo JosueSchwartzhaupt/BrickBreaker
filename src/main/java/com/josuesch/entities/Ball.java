@@ -14,7 +14,7 @@ import java.util.List;
 import static com.josuesch.Game.entities;
 
 public class Ball extends Entity implements Movable {
-    private static final double NATURAL_SPEED = 1;
+    private static final double NATURAL_SPEED = 3;
 
     private double angle;
 
@@ -42,7 +42,24 @@ public class Ball extends Entity implements Movable {
             if(maxSpeed < relativeSpeed) {
                 relativeSpeed = maxSpeed;
                 wallToBounce = HitboxComparator.getClosestWall(this, e);
-                willBounce = true;
+
+                // TODO metodo privado
+                if(e instanceof Player){
+                    double centerPlayer = e.getX() + e.getWidth() / 2.0;
+                    double centerBall = x + width / 2.0;
+
+                    double normalize =
+                            (centerBall - centerPlayer) / (e.getWidth() / 2.0);
+
+                    normalize = Math.max(-1, Math.min(1, normalize));
+
+                    angle = Math.toRadians(270 + normalize * 45);
+                }
+                else {
+                    willBounce = true;
+                    if(e instanceof Block) ((Block) e).damage(1);
+                }
+                break;
             }
         }
         double dx = relativeSpeed * Math.cos(angle);
