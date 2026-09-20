@@ -42,19 +42,28 @@ public class World {
                             Game.player.setX(xx*16);
                             Game.player.setY(yy*16);
                             break;
-                        case 0xFFFF6A00://EasyBlock
+                        case 0xFF161D89://EasyBlock
                             tiles[xx+(yy*WIDTH)] = new FloorTile(xx*16, yy*16, Tile.TILE_FLOOR, new Random().nextInt(4));
                             Game.entities.add(new Block(xx*16, yy*16, 16, 16, 1));
                             break;
-                        case 0xFF4CFF00:
+                        case 0xFF1C9900:
                             tiles[xx+(yy*WIDTH)] = new FloorTile(xx*16,yy*16,Tile.TILE_FLOOR,new Random().nextInt(4));
+                            Game.entities.add(new Block(xx*16, yy*16, 16, 16, 2));
                             break;
-                        case 0xFF7F3300:
+                        case 0xFFE4BC00:
                             tiles[xx+(yy*WIDTH)] = new FloorTile(xx*16,yy*16,Tile.TILE_FLOOR,new Random().nextInt(4));
+                            Game.entities.add(new Block(xx*16, yy*16, 16, 16, 3));
                             break;
-                        case 0xFFFFD800:
+                        case 0xFFCE6E00:
                             tiles[xx+(yy*WIDTH)] = new FloorTile(xx*16,yy*16,Tile.TILE_FLOOR,new Random().nextInt(4));
+                            Game.entities.add(new Block(xx*16, yy*16, 16, 16, 4));
                             break;
+                        case 0xFFCE0000:
+                            tiles[xx+(yy*WIDTH)] = new FloorTile(xx*16,yy*16,Tile.TILE_FLOOR,new Random().nextInt(4));
+                            Game.entities.add(new Block(xx*16, yy*16, 16, 16, 5));
+                            break;
+                        default:
+                            tiles[xx+(yy*WIDTH)] = new FloorTile(xx*16, yy*16,Tile.TILE_FLOOR,new Random().nextInt(4));
                     }
                 }
 

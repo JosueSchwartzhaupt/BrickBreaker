@@ -4,8 +4,8 @@ package com.josuesch;
 import com.josuesch.entities.Ball;
 import com.josuesch.entities.Entity;
 import com.josuesch.entities.Player;
-import com.josuesch.entities.Wall;
 import com.josuesch.graphics.Spritesheet;
+import com.josuesch.graphics.UI;
 import com.josuesch.world.World;
 
 import javax.swing.JFrame;
@@ -38,10 +38,13 @@ public class Game extends Canvas implements Runnable, KeyListener {
     public static Player player;
 
     public static List<Entity> entities;
+    public static List<Ball> balls;
     public static Spritesheet spritesheet;
     public static World world;
+    public static UI ui;
 
     public static boolean hasStarted = false;
+    public static boolean gameOver = false;
 
     public Game() {
         random = new Random();
@@ -53,22 +56,13 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
         // Cria a tela de fundo onde vamos desenhar tudo;
         entities = new ArrayList<Entity>();
+        balls = new ArrayList<Ball>();
         spritesheet = new Spritesheet("/spritesheet.png");
         player = new Player(100,180,32,8);
         entities.add(player);
         world = new World("/map.png");
 
-        //TODO
-        /*
-        entities.add(new Wall(-5,-5,10,HEIGHT));
-        entities.add(new Wall(-5,-5,WIDTH,10));
-        entities.add(new Wall(-5+ HEIGHT,0,10,HEIGHT));
-        entities.add(new Wall(0,-5+ WIDTH,WIDTH,10));
-        */
-       // for (int i = 0; i < 20; i++) {
-       //     entities.add(new Ball(32 + 10/* *i*/,32,5,5, Math.toRadians(90/*Game.random.nextInt(360)*/)));
-       // }
-
+        ui = new UI();
     }
 
     public void initFrame()
@@ -99,6 +93,14 @@ public class Game extends Canvas implements Runnable, KeyListener {
             e.printStackTrace();
         }
 
+    }
+
+    public void restart(){
+        entities.clear();
+        player = new Player(100,180,32,8);
+        entities.add(player);
+        world = new World("/map.png");
+        gameOver = false;
     }
 
     @Override
@@ -146,6 +148,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
             Entity e= entities.get(i);
             e.tick();
         }
+
+        if(hasStarted && balls.isEmpty()) gameOver= true;
     }
 
     public void render()
@@ -169,6 +173,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
             e.render(g);
         }
 
+        ui.render(g);
+
         g.dispose();
         g = bs.getDrawGraphics();
         //bota essa tela de fundo no buffer(escalando para a tela)
@@ -185,10 +191,13 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if(!hasStarted){
+        if(!hasStarted || gameOver){
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                entities.add(new Ball(player.getX() + player.getWidth() / 2.0 - 2, player.getY(), 5, 5, Math.toRadians(270)));
-                hasStarted = true;
+                if(gameOver) restart();
+                else hasStarted = true;
+                var ball = new Ball(player.getX() + player.getWidth() / 2.0 - 2, player.getY(), 5, 5, Math.toRadians(270));
+                entities.add(ball);
+                balls.add(ball);
             }
         }
         else{

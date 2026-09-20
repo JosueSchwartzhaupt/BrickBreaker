@@ -6,8 +6,11 @@ import com.josuesch.assets.Placeble;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 
 public abstract class Entity implements Drawable, Placeble {
+
+
 
     protected double x;
     protected double y;
@@ -19,6 +22,7 @@ public abstract class Entity implements Drawable, Placeble {
     protected double dx;
     protected double dy;
 
+    protected BufferedImage sprite;
 
     public Entity(double x, double y, int width, int height) {
         this.x = x;
@@ -29,6 +33,10 @@ public abstract class Entity implements Drawable, Placeble {
 
     @Override
     public void draw(Graphics g) {
+        if(sprite != null){
+            g.drawImage(sprite, (int)this.getX(),(int)this.getY(), null);
+            return;
+        }
         g.setColor(new Color(255,0,0));
         g.fillRect((int)Math.round(x), (int)Math.round(y), width, height);
     }

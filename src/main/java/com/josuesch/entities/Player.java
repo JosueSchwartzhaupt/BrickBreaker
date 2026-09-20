@@ -1,6 +1,5 @@
 package com.josuesch.entities;
 
-import com.josuesch.Game;
 import com.josuesch.assets.HitboxComparator;
 import com.josuesch.assets.Movable;
 import com.josuesch.assets.Placeble;
@@ -8,10 +7,8 @@ import com.josuesch.world.WallTile;
 import com.josuesch.world.World;
 
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.josuesch.Game.entities;
 
@@ -19,6 +16,8 @@ public class Player extends Entity implements Movable {
     private static final double NATURAL_SPEED = 3;
 
     private boolean right,up,left,down;
+
+    private int points;
 
     public Player(double x, double y, int width, int height) {
         super(x, y, width, height);
@@ -85,6 +84,22 @@ public class Player extends Entity implements Movable {
     @Override
     public double getSpeed() {
         return speed;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void addPoints(int points) {
+        this.points += points;
+    }
+
+    public void resetPoints() {
+        this.points = 0;
+    }
+
+    public void removePoints(int points) {
+        this.points -= points;
     }
 
 }

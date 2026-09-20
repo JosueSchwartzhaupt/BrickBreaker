@@ -69,6 +69,8 @@ public class Ball extends Entity implements Movable {
         y += dy;
 
         if(willBounce)bounce(wallToBounce);
+
+        if(y> Game.HEIGHT + width + 10)dispawn();
     }
     private void bounce(Direction d){
         double dx = 1 * Math.cos(angle);
@@ -97,6 +99,12 @@ public class Ball extends Entity implements Movable {
     @Override
     public double getSpeed() {
         return speed;
+    }
+
+    @Override
+    public void dispawn(){
+        super.dispawn();
+        Game.balls.remove(this);
     }
 
 }
