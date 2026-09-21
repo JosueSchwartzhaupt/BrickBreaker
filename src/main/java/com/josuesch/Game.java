@@ -192,12 +192,13 @@ public class Game extends Canvas implements Runnable, KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if(!hasStarted || gameOver){
+            //TODO
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                 if(gameOver) restart();
-                else hasStarted = true;
-                var ball = new Ball(player.getX() + player.getWidth() / 2.0 - 2, player.getY(), 5, 5, Math.toRadians(270));
+                var ball = new Ball(player.getX() + player.getWidth() / 2.0 - 2, player.getY() - 5, 5, 5, Math.toRadians(270));
                 entities.add(ball);
                 balls.add(ball);
+                if(!gameOver) hasStarted = true;
             }
         }
         else{

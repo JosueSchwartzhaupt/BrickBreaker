@@ -42,11 +42,8 @@ public class Player extends Entity implements Movable {
                 .map(tile -> (Placeble) tile) // Casts the filtered tiles to your interface
                 .toList());
         list.addAll(entities);
-        for (Placeble e : list) {
-            if(e.equals(this)) continue;
-            //if(e instanceof Ball) continue;
-            relativeSpeed = Math.min(relativeSpeed,HitboxComparator.getMaxSpeed(this, e));
-        }
+        var collision = HitboxComparator.processCollision(this, list);
+        if(collision.isPresent())relativeSpeed = collision.get().maxSpeed();
         dx = relativeSpeed * (horizontal/mag);
         dy = relativeSpeed * (vertical/mag);
 
