@@ -1,6 +1,8 @@
 package com.josuesch.assets;
 
-import java.awt.Rectangle;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 
 public class HitboxComparator {
 
@@ -106,6 +108,14 @@ public class HitboxComparator {
         if(min == up) return Direction.UP;
 
         return null;
+    }
+
+    public static Optional<Collision> processCollision(Movable m, List<Placeble> placebles){
+        return placebles.stream()
+                .filter(p -> !p.equals(m))
+                .filter(p -> willColide(m, p))
+                .map(p -> new Collision(p, getMaxSpeed(m, p), getClosestWall(m, p)))
+                .min(Comparator.naturalOrder());
     }
 
 }

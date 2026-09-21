@@ -10,6 +10,7 @@ import com.josuesch.world.World;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static com.josuesch.Game.entities;
 
@@ -35,13 +36,13 @@ public class Ball extends Entity implements Movable {
                 .map(tile -> (Placeble) tile) // Casts the filtered tiles to your interface
                 .toList());
         list.addAll(entities);
-        for (Placeble e : list) {
-            if(e.equals(this)) continue;
-           // if(e instanceof Ball) continue;
-            double maxSpeed = HitboxComparator.getMaxSpeed(this, e);
-            if(maxSpeed < relativeSpeed) {
-                relativeSpeed = maxSpeed;
-                wallToBounce = HitboxComparator.getClosestWall(this, e);
+
+        var collision = HitboxComparator.processCollision(this, list);
+        if(collision.isPresent()){
+            var coll = collision.get();
+                relativeSpeed = coll.maxSpeed();
+                wallToBounce = coll.direction();
+                var e = coll.hit();
 
                 // TODO metodo privado
                 if(e instanceof Player){
@@ -59,9 +60,7 @@ public class Ball extends Entity implements Movable {
                     willBounce = true;
                     if(e instanceof Block) ((Block) e).damage(1);
                 }
-                break;
             }
-        }
         double dx = relativeSpeed * Math.cos(angle);
         double dy = relativeSpeed * Math.sin(angle);
 
