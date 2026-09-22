@@ -90,12 +90,30 @@ public class HitboxComparator {
         } else if (timeY > timeX) {
             direction = (dy < 0) ? Direction.UP : Direction.DOWN;
         } else {
-            direction = (Math.abs(dx) > Math.abs(dy))
-                    ? ((dx < 0) ? Direction.LEFT : Direction.RIGHT)
-                    : ((dy < 0) ? Direction.UP : Direction.DOWN);
+            direction = getClosestWall(m,p);
         }
 
         return new Collision(p, maxSpeed, direction);
+    }
+
+    //TODO rever se está com a logica correta, talvez precise de mais um tratamento para o null
+    public static Direction getClosestWall(Placeble m, Placeble p){
+        double right = p.getX() - (m.getX() + m.getWidth());
+        double left = m.getX() - (p.getX() + p.getWidth());
+        double down = p.getY() - (m.getY() + m.getHeight());
+        double up = m.getY() - (p.getY() + p.getHeight());
+        right = right >= 0 ? right : Double.MAX_VALUE;
+        left = left >= 0 ? left : Double.MAX_VALUE;
+        down = down >= 0 ? down : Double.MAX_VALUE;
+        up = up >= 0 ? up : Double.MAX_VALUE;
+
+        double min = Math.min(Math.min(right, left), Math.min(down, up));
+        if(min == right) return Direction.RIGHT;
+        if(min == left) return Direction.LEFT;
+        if(min == down) return Direction.DOWN;
+        if(min == up) return Direction.UP;
+
+        return null;
     }
 
     public static Optional<Collision> processCollision(Movable m, List<Placeble> placebles){
