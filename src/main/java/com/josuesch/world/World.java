@@ -2,6 +2,7 @@ package com.josuesch.world;
 
 import com.josuesch.Game;
 import com.josuesch.entities.Block;
+import com.josuesch.entities.Player;
 
 import javax.imageio.ImageIO;
 import java.awt.Graphics;
@@ -39,7 +40,7 @@ public class World {
                             break;
                         case 0xFF0026FF://Player
                             tiles[xx+(yy*WIDTH)] = new FloorTile(xx*16, yy*16,Tile.TILE_FLOOR,new Random().nextInt(4));
-                            Game.player.setX(xx*16);
+                            Game.player.setX(xx*16 - Game.player.getWidth()/2.0);
                             Game.player.setY(yy*16);
                             break;
                         case 0xFF161D89://EasyBlock

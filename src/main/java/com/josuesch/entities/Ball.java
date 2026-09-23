@@ -1,6 +1,7 @@
 package com.josuesch.entities;
 
 import com.josuesch.Game;
+import com.josuesch.assets.Collision;
 import com.josuesch.assets.Direction;
 import com.josuesch.assets.HitboxComparator;
 import com.josuesch.assets.Movable;
@@ -28,9 +29,9 @@ public class Ball extends Entity implements Movable {
     public void move(){
         double relativeSpeed = speed;
 
-        boolean willBounce = false;
-        Direction wallToBounce = null;
-        //TODO
+        double newAngle = angle;
+
+        //TODO make better way to find colidables
         List<Placeble> list = new java.util.ArrayList<>(Arrays.stream(World.getTiles())
                 .filter(tile -> tile instanceof WallTile)
                 .map(tile -> (Placeble) tile) // Casts the filtered tiles to your interface
@@ -40,49 +41,50 @@ public class Ball extends Entity implements Movable {
         var collision = HitboxComparator.processCollision(this, list);
         if(collision.isPresent()){
             var coll = collision.get();
-                relativeSpeed = coll.maxSpeed();
-                wallToBounce = coll.direction();
-                var e = coll.hit();
+            relativeSpeed = coll.maxSpeed();
 
-                // TODO metodo privado
-                if(e instanceof Player){
-                    double centerPlayer = e.getX() + e.getWidth() / 2.0;
-                    double centerBall = x + width / 2.0;
+            newAngle = calculateBounceAngle(coll);
 
-                    double normalize =
-                            (centerBall - centerPlayer) / (e.getWidth() / 2.0);
-
-                    normalize = Math.max(-1, Math.min(1, normalize));
-
-                    angle = Math.toRadians(270 + normalize * 45);
-                }
-                else {
-                    willBounce = true;
-                    if(e instanceof Block) ((Block) e).damage(1);
-                }
-            }
+            var hit = coll.hit();
+            if(hit instanceof Block) ((Block) hit).damage(1);
+        }
         double dx = relativeSpeed * Math.cos(angle);
         double dy = relativeSpeed * Math.sin(angle);
 
         x += dx;
         y += dy;
 
-        if(willBounce)bounce(wallToBounce);
+        angle = newAngle;
 
         if(y> Game.HEIGHT + width + 10)dispawn();
     }
-    private void bounce(Direction d){
+
+    private double calculateBounceAngle(Collision c){
+        // Player Bounce
+        if(c.hit() instanceof Player){
+            var e = c.hit();
+            double centerPlayer = e.getX() + e.getWidth() / 2.0;
+            double centerBall = x + width / 2.0;
+
+            double normalize =
+                    (centerBall - centerPlayer) / (e.getWidth() / 2.0);
+
+            normalize = Math.max(-1, Math.min(1, normalize));
+
+            return Math.toRadians(270 + normalize * 45);
+        }
+
+        // Other bounce
         double dx = 1 * Math.cos(angle);
         double dy = 1 * Math.sin(angle);
-        switch (d){
+        switch (c.direction()){
             case RIGHT, LEFT -> dx = -dx;
             case UP, DOWN -> dy = -dy;
         }
-        //System.out.println(d);
-        //System.out.println(angle);
-        angle = Math.atan2(dy, dx);
-        if(angle < 0)angle += 2 * Math.PI;
-        //System.out.println(angle);
+
+        double result = Math.atan2(dy, dx);
+        if(result < 0)result += 2 * Math.PI;
+        return result;
     }
 
     @Override
