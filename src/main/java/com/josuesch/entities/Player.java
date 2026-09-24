@@ -1,21 +1,17 @@
 package com.josuesch.entities;
 
+import com.josuesch.Game;
 import com.josuesch.assets.HitboxComparator;
 import com.josuesch.assets.Movable;
-import com.josuesch.assets.Placeble;
-import com.josuesch.world.WallTile;
-import com.josuesch.world.World;
-
-
-import java.util.Arrays;
-import java.util.List;
-
-import static com.josuesch.Game.entities;
 
 public class Player extends Entity implements Movable {
     private static final double NATURAL_SPEED = 3;
 
     private boolean right,up,left,down;
+
+    private double speed;
+    private double dx;
+    private double dy;
 
     private int points;
 
@@ -36,13 +32,7 @@ public class Player extends Entity implements Movable {
         dy = speed * (vertical/mag);
 
         double relativeSpeed = speed;
-        //TODO
-        List<Placeble> list = new java.util.ArrayList<>(Arrays.stream(World.getTiles())
-                .filter(tile -> tile instanceof WallTile)
-                .map(tile -> (Placeble) tile) // Casts the filtered tiles to your interface
-                .toList());
-        list.addAll(entities);
-        var collision = HitboxComparator.processCollision(this, list);
+        var collision = HitboxComparator.processCollision(this, Game.getCollidables());
         if(collision.isPresent())relativeSpeed = collision.get().maxSpeed();
         dx = relativeSpeed * (horizontal/mag);
         dy = relativeSpeed * (vertical/mag);
@@ -99,4 +89,8 @@ public class Player extends Entity implements Movable {
         this.points -= points;
     }
 
+    @Override
+    public boolean isColidable() {
+        return true;
+    }
 }

@@ -1,6 +1,7 @@
 package com.josuesch.world;
 
 import com.josuesch.Game;
+import com.josuesch.assets.Placeble;
 import com.josuesch.entities.Block;
 import com.josuesch.entities.Player;
 
@@ -15,10 +16,12 @@ import java.util.Random;
 public class World {
 
     private static Tile[] tiles;
+    private static final List<Placeble> solidTiles = new ArrayList<>();
     public static int WIDTH, HEIGHT;
 
     public World(String path)
     {
+        solidTiles.clear();
         try {
             BufferedImage map = ImageIO.read(getClass().getResource(path));
             WIDTH=map.getWidth();
@@ -33,7 +36,9 @@ public class World {
                     switch (pixels[xx+(yy*WIDTH)])
                     {
                         case 0xFFFFFFFF://Wall
-                            tiles[xx+(yy*WIDTH)] = new WallTile(xx*16, yy*16, Tile.TILE_WALL);
+                            WallTile wall = new WallTile(xx*16, yy*16, Tile.TILE_WALL);
+                            tiles[xx+(yy*WIDTH)] = wall;
+                            solidTiles.add(wall);
                             break;
                         case 0xFF000000://Floor
                             tiles[xx+(yy*WIDTH)] = new FloorTile(xx*16, yy*16,Tile.TILE_FLOOR,new Random().nextInt(4));
@@ -76,7 +81,7 @@ public class World {
 
     public void render(Graphics g)
     {
-        //TODO
+        //TODO some old logic that needs trimming
         int xstart = 0 >> 4;
         int ystart = 0 >> 4;
 
@@ -96,7 +101,10 @@ public class World {
 
     }
 
-    // TODO
+    public static List<Placeble> getSolidTiles() {
+        return solidTiles;
+    }
+
     public static Tile[] getTiles() {
         return tiles;
     }

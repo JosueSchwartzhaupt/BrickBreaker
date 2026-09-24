@@ -28,7 +28,10 @@ public class Block extends Entity{
 
     @Override
     public void tick() {
-        if(health <= 0)this.dispawn();
+        if(health <= 0){
+            this.dispawn();
+            if((Game.random.nextInt(4) + 1) % 4 ==0) Game.entities.add(new PowerUp(x+2, y+2, PowerUpType.MORE_BALLS));
+        }
     }
 
     //TODO, importar como lista e acessar indice
@@ -50,5 +53,10 @@ public class Block extends Entity{
                 sprite = BLOCK_5;
                 break;
         }
+    }
+
+    @Override
+    public boolean isColidable() {
+        return true;
     }
 }

@@ -10,4 +10,8 @@ public class WallTile extends Tile
 		
 	}
 
+	@Override
+	public boolean isColidable() {
+		return true;
+	}
 }

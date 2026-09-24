@@ -6,6 +6,7 @@ import java.util.Optional;
 
 public class HitboxComparator {
 
+    //TODO same logic repeted twice, place private method?
     public static boolean isColiding(Placeble p1, Placeble p2){
         double tw = p1.getWidth();
         double th = p1.getHeight();
@@ -118,6 +119,7 @@ public class HitboxComparator {
 
     public static Optional<Collision> processCollision(Movable m, List<Placeble> placebles){
         return placebles.stream()
+                .filter(Placeble::isColidable)
                 .filter(p -> !p.equals(m))
                 .filter(p -> willColide(m, p)) // Mantém sua otimização inicial
                 .map(p -> getCollision(m, p))

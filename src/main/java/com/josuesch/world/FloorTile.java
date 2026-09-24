@@ -2,7 +2,6 @@ package com.josuesch.world;
 
 
 
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 public class FloorTile extends Tile
@@ -12,4 +11,8 @@ public class FloorTile extends Tile
 		super(x, y, sprite);
 	}
 
+	@Override
+	public boolean isColidable() {
+		return false;
+	}
 }

@@ -9,7 +9,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-public class Tile implements Placeble {
+public abstract class Tile implements Placeble {
 
 	public static final BufferedImage TILE_FLOOR = Game.spritesheet.getSprite(16*1, 16*4, 16, 16);
 	public static final BufferedImage TILE_WALL = Game.spritesheet.getSprite(16*0, 16*4, 16, 16);

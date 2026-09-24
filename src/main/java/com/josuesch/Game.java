@@ -1,6 +1,7 @@
 package com.josuesch;
 
 
+import com.josuesch.assets.Placeble;
 import com.josuesch.entities.Ball;
 import com.josuesch.entities.Entity;
 import com.josuesch.entities.Player;
@@ -45,6 +46,15 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     public static boolean hasStarted = false;
     public static boolean gameOver = false;
+
+    private static final List<Placeble> collidablesBuffer = new ArrayList<>();
+
+    public static List<Placeble> getCollidables() {
+        collidablesBuffer.clear();
+        collidablesBuffer.addAll(World.getSolidTiles());
+        collidablesBuffer.addAll(entities);
+        return collidablesBuffer;
+    }
 
     public Game() {
         random = new Random();
@@ -142,7 +152,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 //        for (Entity e : entities) {
 //            e.tick();
 //        }
-        //TODO
+        //TODO this loop is here because entities get removed from the list
         for(int i=0;i< entities.size(); i++)
         {
             Entity e= entities.get(i);
@@ -192,12 +202,11 @@ public class Game extends Canvas implements Runnable, KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if(!hasStarted || gameOver){
-            //TODO
+            //TODO refector 2 internal ifs
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                 if(gameOver) restart();
                 var ball = new Ball(player.getX() + player.getWidth() / 2.0 - 2, player.getY() - 5, 5, 5, Math.toRadians(270));
-                entities.add(ball);
-                balls.add(ball);
+                addBall(ball);
                 if(!gameOver) hasStarted = true;
             }
         }
@@ -241,5 +250,14 @@ public class Game extends Canvas implements Runnable, KeyListener {
 //                e.getKeyCode() == KeyEvent.VK_S) {
 //            player.setDown(false);
 //        }
+    }
+
+    public static void addBall(Ball ball) {
+        entities.add(ball);
+        balls.add(ball);
+    }
+    public static void removeBall(Ball ball) {
+        entities.remove(ball);
+        balls.remove(ball);
     }
 }

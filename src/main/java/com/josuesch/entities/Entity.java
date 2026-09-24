@@ -18,10 +18,6 @@ public abstract class Entity implements Drawable, Placeble {
     protected int width;
     protected int height;
 
-    protected double speed;
-    protected double dx;
-    protected double dy;
-
     protected BufferedImage sprite;
 
     public Entity(double x, double y, int width, int height) {
@@ -45,7 +41,7 @@ public abstract class Entity implements Drawable, Placeble {
 
     }
 
-    //TODO
+    //TODO removing for the list coult cause some iteration issues
     public void dispawn(){
         Game.entities.remove(this);
     }
@@ -80,5 +76,10 @@ public abstract class Entity implements Drawable, Placeble {
     @Override
     public int getHeight() {
         return height;
+    }
+
+    @Override
+    public boolean isColidable() {
+        return false;
     }
 }
