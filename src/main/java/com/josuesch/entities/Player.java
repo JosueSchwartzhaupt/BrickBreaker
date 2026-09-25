@@ -5,13 +5,16 @@ import com.josuesch.assets.HitboxComparator;
 import com.josuesch.assets.Movable;
 
 public class Player extends Entity implements Movable {
-    private static final double NATURAL_SPEED = 3;
+    public static final double NATURAL_SPEED = 3;
+    public static final int MAX_HEALTH = 3;
 
     private boolean right, up, left, down;
 
     private double speed;
     private double dx;
     private double dy;
+
+    private int health = MAX_HEALTH;
 
     private int points;
 
@@ -87,6 +90,22 @@ public class Player extends Entity implements Movable {
 
     public void removePoints(int points) {
         this.points -= points;
+    }
+
+    public void heal(int healPoints) {
+        this.health = Math.min(health + healPoints, MAX_HEALTH);
+    }
+
+    public void damage(int damage) {
+        this.health = Math.max(health - damage, 0);
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public boolean isDead() {
+        return health == 0;
     }
 
     @Override

@@ -100,6 +100,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     public void restart() {
         entities.clear();
+        balls.clear();
         player = new Player(this, 100, 180, 32, 8);
         entities.add(player);
         world = new World(this, "/map.png");
@@ -133,17 +134,23 @@ public class Game extends Canvas implements Runnable, KeyListener {
     }
 
     private void tick() {
-        for (int i = 0; i < entities.size(); i++) {
-            entities.get(i).tick();
+        if (hasStarted()) {
+            for (int i = 0; i < entities.size(); i++) {
+                entities.get(i).tick();
+            }
+
+            if (!entitiesToRemove.isEmpty()) {
+                entities.removeAll(entitiesToRemove);
+                balls.removeAll(entitiesToRemove);
+                entitiesToRemove.clear();
+            }
         }
 
-        if (!entitiesToRemove.isEmpty()) {
-            entities.removeAll(entitiesToRemove);
-            balls.removeAll(entitiesToRemove);
-            entitiesToRemove.clear();
+        if (started && balls.isEmpty()) {
+            player.damage(1);
+            started = false;
         }
-
-        if (started && balls.isEmpty()) gameOver = true;
+        if (player.isDead()) gameOver = true;
     }
 
     private void render() {
@@ -161,8 +168,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
         world.render(g);
 
-        for (Entity e : entities) {
-            e.render(g);
+        for (int i = 0; i < entities.size(); i++) {
+            entities.get(i).render(g);
         }
 
         ui.render(g);
@@ -180,10 +187,11 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (!started || gameOver) {
-            // TODO refector 2 internal ifs
-            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                if (gameOver) restart();
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            if (isGameOver()) {
+                restart();
+            }
+            if (hasNotStarted()) {
                 var ball =
                         new Ball(
                                 this,
@@ -193,15 +201,14 @@ public class Game extends Canvas implements Runnable, KeyListener {
                                 5,
                                 Math.toRadians(270));
                 addBall(ball);
-                if (!gameOver) started = true;
+                started = true;
             }
-        } else {
-            if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
-                player.setRight(true);
-            }
-            if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
-                player.setLeft(true);
-            }
+        }
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+            player.setRight(true);
+        }
+        if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+            player.setLeft(true);
         }
     }
 
@@ -238,6 +245,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     public boolean hasNotStarted() {
         return !started;
+    }
+
+    public boolean hasStarted() {
+        return started;
     }
 
     public void queueRemoval(Entity entity) {
