@@ -6,8 +6,8 @@ import java.util.Optional;
 
 public class HitboxComparator {
 
-    //TODO same logic repeted twice, place private method?
-    public static boolean isColiding(Placeble p1, Placeble p2){
+    // TODO same logic repeted twice, place private method?
+    public static boolean isColiding(Placeble p1, Placeble p2) {
         double tw = p1.getWidth();
         double th = p1.getHeight();
         double rw = p2.getWidth();
@@ -24,13 +24,13 @@ public class HitboxComparator {
         tw += tx;
         th += ty;
         //      overflow || intersect
-        return ((rw < rx || rw > tx) &&
-                (rh < ry || rh > ty) &&
-                (tw < tx || tw > rx) &&
-                (th < ty || th > ry));
+        return ((rw < rx || rw > tx)
+                && (rh < ry || rh > ty)
+                && (tw < tx || tw > rx)
+                && (th < ty || th > ry));
     }
 
-    public static boolean willColide(Movable m, Placeble p){
+    public static boolean willColide(Movable m, Placeble p) {
         double newX = m.getX() + m.getSpeed() * Math.cos(m.getAngle());
         double newY = m.getY() + m.getSpeed() * Math.sin(m.getAngle());
 
@@ -50,10 +50,10 @@ public class HitboxComparator {
         tw += tx;
         th += ty;
         //      overflow || intersect
-        return ((rw < rx || rw > tx) &&
-                (rh < ry || rh > ty) &&
-                (tw < tx || tw > rx) &&
-                (th < ty || th > ry));
+        return ((rw < rx || rw > tx)
+                && (rh < ry || rh > ty)
+                && (tw < tx || tw > rx)
+                && (th < ty || th > ry));
     }
 
     public static Collision getCollision(Movable m, Placeble p) {
@@ -91,14 +91,14 @@ public class HitboxComparator {
         } else if (timeY > timeX) {
             direction = (dy < 0) ? Direction.UP : Direction.DOWN;
         } else {
-            direction = getClosestWall(m,p);
+            direction = getClosestWall(m, p);
         }
 
         return new Collision(p, maxSpeed, direction);
     }
 
-    //TODO rever se está com a logica correta, talvez precise de mais um tratamento para o null
-    public static Direction getClosestWall(Placeble m, Placeble p){
+    // TODO rever se está com a logica correta, talvez precise de mais um tratamento para o null
+    public static Direction getClosestWall(Placeble m, Placeble p) {
         double right = p.getX() - (m.getX() + m.getWidth());
         double left = m.getX() - (p.getX() + p.getWidth());
         double down = p.getY() - (m.getY() + m.getHeight());
@@ -109,15 +109,15 @@ public class HitboxComparator {
         up = up >= 0 ? up : Double.MAX_VALUE;
 
         double min = Math.min(Math.min(right, left), Math.min(down, up));
-        if(min == right) return Direction.RIGHT;
-        if(min == left) return Direction.LEFT;
-        if(min == down) return Direction.DOWN;
-        if(min == up) return Direction.UP;
+        if (min == right) return Direction.RIGHT;
+        if (min == left) return Direction.LEFT;
+        if (min == down) return Direction.DOWN;
+        if (min == up) return Direction.UP;
 
         return null;
     }
 
-    public static Optional<Collision> processCollision(Movable m, List<Placeble> placebles){
+    public static Optional<Collision> processCollision(Movable m, List<Placeble> placebles) {
         return placebles.stream()
                 .filter(Placeble::isColidable)
                 .filter(p -> !p.equals(m))
@@ -125,5 +125,4 @@ public class HitboxComparator {
                 .map(p -> getCollision(m, p))
                 .min(Comparator.naturalOrder());
     }
-
 }

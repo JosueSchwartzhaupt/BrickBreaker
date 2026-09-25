@@ -7,7 +7,7 @@ import com.josuesch.assets.Movable;
 public class Player extends Entity implements Movable {
     private static final double NATURAL_SPEED = 3;
 
-    private boolean right,up,left,down;
+    private boolean right, up, left, down;
 
     private double speed;
     private double dx;
@@ -20,22 +20,22 @@ public class Player extends Entity implements Movable {
         speed = NATURAL_SPEED;
     }
 
-    public void move(){
-        int horizontal = (right? 1:0) - (left? 1:0);
-        int vertical = (down? 1:0) - (up? 1:0);
-        double mag = Math.sqrt(Math.pow(horizontal, 2)+Math.pow(vertical, 2));
-        if(mag==0) {
-            mag=1;
+    public void move() {
+        int horizontal = (right ? 1 : 0) - (left ? 1 : 0);
+        int vertical = (down ? 1 : 0) - (up ? 1 : 0);
+        double mag = Math.sqrt(Math.pow(horizontal, 2) + Math.pow(vertical, 2));
+        if (mag == 0) {
+            mag = 1;
         }
 
-        dx = speed * (horizontal/mag);
-        dy = speed * (vertical/mag);
+        dx = speed * (horizontal / mag);
+        dy = speed * (vertical / mag);
 
         double relativeSpeed = speed;
         var collision = HitboxComparator.processCollision(this, Game.getCollidables());
-        if(collision.isPresent())relativeSpeed = collision.get().maxSpeed();
-        dx = relativeSpeed * (horizontal/mag);
-        dy = relativeSpeed * (vertical/mag);
+        if (collision.isPresent()) relativeSpeed = collision.get().maxSpeed();
+        dx = relativeSpeed * (horizontal / mag);
+        dy = relativeSpeed * (vertical / mag);
 
         x += dx;
         y += dy;
@@ -65,7 +65,7 @@ public class Player extends Entity implements Movable {
     @Override
     public double getAngle() {
         double response = Math.atan2(dy, dx);
-        return response < 0? (response + (2 * Math.PI)): response;
+        return response < 0 ? (response + (2 * Math.PI)) : response;
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.josuesch.assets;
 
-public interface Movable extends Placeble{
+public interface Movable extends Placeble {
     double getAngle();
-    double getSpeed();
 
+    double getSpeed();
 }

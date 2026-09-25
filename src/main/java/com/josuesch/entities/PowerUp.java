@@ -30,7 +30,7 @@ public class PowerUp extends Entity implements Movable {
         }
     }
 
-    private void move(){
+    private void move() {
         y += NATURAL_SPEED;
     }
 

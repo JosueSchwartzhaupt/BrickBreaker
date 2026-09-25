@@ -1,16 +1,15 @@
 package com.josuesch.entities;
 
 import com.josuesch.Game;
-
 import java.awt.image.BufferedImage;
 
-public class Block extends Entity{
+public class Block extends Entity {
 
-    public static final BufferedImage BLOCK_1 = Game.spritesheet.getSprite(16*0, 16*0, 16, 16);
-    public static final BufferedImage BLOCK_2 = Game.spritesheet.getSprite(16*1, 16*0, 16, 16);
-    public static final BufferedImage BLOCK_3 = Game.spritesheet.getSprite(16*2, 16*0, 16, 16);
-    public static final BufferedImage BLOCK_4 = Game.spritesheet.getSprite(16*3, 16*0, 16, 16);
-    public static final BufferedImage BLOCK_5 = Game.spritesheet.getSprite(16*4, 16*0, 16, 16);
+    public static final BufferedImage BLOCK_1 = Game.spritesheet.getSprite(16 * 0, 16 * 0, 16, 16);
+    public static final BufferedImage BLOCK_2 = Game.spritesheet.getSprite(16 * 1, 16 * 0, 16, 16);
+    public static final BufferedImage BLOCK_3 = Game.spritesheet.getSprite(16 * 2, 16 * 0, 16, 16);
+    public static final BufferedImage BLOCK_4 = Game.spritesheet.getSprite(16 * 3, 16 * 0, 16, 16);
+    public static final BufferedImage BLOCK_5 = Game.spritesheet.getSprite(16 * 4, 16 * 0, 16, 16);
 
     private int health;
 
@@ -20,7 +19,7 @@ public class Block extends Entity{
         updateSprite();
     }
 
-    public void damage(int damage){
+    public void damage(int damage) {
         health = Math.max(0, health - damage);
         Game.player.addPoints(100);
         updateSprite();
@@ -28,15 +27,16 @@ public class Block extends Entity{
 
     @Override
     public void tick() {
-        if(health <= 0){
+        if (health <= 0) {
             this.dispawn();
-            if((Game.random.nextInt(4) + 1) % 4 ==0) Game.entities.add(new PowerUp(x+2, y+2, PowerUpType.MORE_BALLS));
+            if ((Game.random.nextInt(4) + 1) % 4 == 0)
+                Game.entities.add(new PowerUp(x + 2, y + 2, PowerUpType.MORE_BALLS));
         }
     }
 
-    //TODO, importar como lista e acessar indice
-    private void updateSprite(){
-        switch (health){
+    // TODO, importar como lista e acessar indice
+    private void updateSprite() {
+        switch (health) {
             case 1:
                 sprite = BLOCK_1;
                 break;

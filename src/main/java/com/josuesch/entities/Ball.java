@@ -5,7 +5,6 @@ import com.josuesch.assets.Collision;
 import com.josuesch.assets.HitboxComparator;
 import com.josuesch.assets.Movable;
 
-
 public class Ball extends Entity implements Movable {
     private static final double NATURAL_SPEED = 3;
 
@@ -18,20 +17,20 @@ public class Ball extends Entity implements Movable {
         this.angle = angle;
     }
 
-    private void move(){
+    private void move() {
         double relativeSpeed = speed;
 
         double newAngle = angle;
 
         var collision = HitboxComparator.processCollision(this, Game.getCollidables());
-        if(collision.isPresent()){
+        if (collision.isPresent()) {
             var coll = collision.get();
             relativeSpeed = coll.maxSpeed();
 
             newAngle = calculateBounceAngle(coll);
 
             var hit = coll.hit();
-            if(hit instanceof Block) ((Block) hit).damage(1);
+            if (hit instanceof Block) ((Block) hit).damage(1);
         }
         double dx = relativeSpeed * Math.cos(angle);
         double dy = relativeSpeed * Math.sin(angle);
@@ -41,18 +40,17 @@ public class Ball extends Entity implements Movable {
 
         angle = newAngle;
 
-        if(y> Game.HEIGHT + width + 10)dispawn();
+        if (y > Game.HEIGHT + width + 10) dispawn();
     }
 
-    private double calculateBounceAngle(Collision c){
+    private double calculateBounceAngle(Collision c) {
         // Player Bounce
-        if(c.hit() instanceof Player){
+        if (c.hit() instanceof Player) {
             var e = c.hit();
             double centerPlayer = e.getX() + e.getWidth() / 2.0;
             double centerBall = x + width / 2.0;
 
-            double normalize =
-                    (centerBall - centerPlayer) / (e.getWidth() / 2.0);
+            double normalize = (centerBall - centerPlayer) / (e.getWidth() / 2.0);
 
             normalize = Math.max(-1, Math.min(1, normalize));
 
@@ -62,13 +60,13 @@ public class Ball extends Entity implements Movable {
         // Other bounce
         double dx = 1 * Math.cos(angle);
         double dy = 1 * Math.sin(angle);
-        switch (c.direction()){
+        switch (c.direction()) {
             case RIGHT, LEFT -> dx = -dx;
             case UP, DOWN -> dy = -dy;
         }
 
         double result = Math.atan2(dy, dx);
-        if(result < 0)result += 2 * Math.PI;
+        if (result < 0) result += 2 * Math.PI;
         return result;
     }
 
@@ -88,8 +86,7 @@ public class Ball extends Entity implements Movable {
     }
 
     @Override
-    public void dispawn(){
+    public void dispawn() {
         Game.removeBall(this);
     }
-
 }
