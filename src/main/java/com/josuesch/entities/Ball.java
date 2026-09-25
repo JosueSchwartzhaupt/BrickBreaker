@@ -84,9 +84,4 @@ public class Ball extends Entity implements Movable {
     public double getSpeed() {
         return speed;
     }
-
-    @Override
-    public void dispawn() {
-        game.removeBall(this);
-    }
 }

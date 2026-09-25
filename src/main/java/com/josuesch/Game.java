@@ -46,6 +46,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     private final List<Placeble> collidablesBuffer = new ArrayList<>();
 
+    private final List<Entity> entitiesToRemove = new ArrayList<>();
+
     public List<Placeble> getCollidables() {
         collidablesBuffer.clear();
         collidablesBuffer.addAll(World.getSolidTiles());
@@ -131,13 +133,14 @@ public class Game extends Canvas implements Runnable, KeyListener {
     }
 
     private void tick() {
-        //        for (Entity e : entities) {
-        //            e.tick();
-        //        }
-        // TODO this loop is here because entities get removed from the list
-        for (int i = 0; i < entities.size(); i++) {
-            Entity e = entities.get(i);
-            e.tick();
+        for (Entity entity : entities) {
+            entity.tick();
+        }
+
+        if (!entitiesToRemove.isEmpty()) {
+            entities.removeAll(entitiesToRemove);
+            balls.removeAll(entitiesToRemove);
+            entitiesToRemove.clear();
         }
 
         if (started && balls.isEmpty()) gameOver = true;
@@ -240,5 +243,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     public boolean hasNotStarted() {
         return !started;
+    }
+
+    public void queueRemoval(Entity entity) {
+        entitiesToRemove.add(entity);
     }
 }

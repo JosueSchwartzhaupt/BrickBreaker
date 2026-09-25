@@ -39,9 +39,8 @@ public abstract class Entity implements Drawable, Placeble {
 
     public void tick() {}
 
-    // TODO removing for the list coult cause some iteration issues
     public void dispawn() {
-        game.getEntities().remove(this);
+        game.queueRemoval(this);
     }
 
     public void render(Graphics g) {
