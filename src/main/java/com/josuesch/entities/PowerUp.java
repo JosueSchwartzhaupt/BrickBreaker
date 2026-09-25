@@ -10,8 +10,8 @@ public class PowerUp extends Entity implements Movable {
 
     private PowerUpType type;
 
-    public PowerUp(double x, double y, PowerUpType type) {
-        super(x, y, 14, 14);
+    public PowerUp(Game game, double x, double y, PowerUpType type) {
+        super(game, x, y, 14, 14);
         this.type = type;
         sprite = type.getSprite();
     }
@@ -20,8 +20,8 @@ public class PowerUp extends Entity implements Movable {
     public void tick() {
         move();
 
-        if (HitboxComparator.isColiding(this, Game.player)) {
-            type.apply(Game.player);
+        if (HitboxComparator.isColiding(this, game.getPlayer())) {
+            type.apply(game, game.getPlayer());
             dispawn();
             return;
         }

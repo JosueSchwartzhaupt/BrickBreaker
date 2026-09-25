@@ -2,34 +2,35 @@ package com.josuesch.entities;
 
 import com.josuesch.Game;
 import java.awt.image.BufferedImage;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 public enum PowerUpType {
     MORE_BALLS(
-            Game.spritesheet.getSprite(16 * 1 + 2, 16 * 1 + 2, 14, 14),
-            (player) -> {
+            Game.SPRITESHEET.getSprite(16 * 1 + 2, 16 * 1 + 2, 14, 14),
+            (game, player) -> {
                 var ball1 =
                         new Ball(
+                                game,
                                 player.getX() + player.getWidth() / 2.0 - 2,
                                 player.getY() - 5,
                                 5,
                                 5,
                                 Math.toRadians(270));
-                Game.addBall(ball1);
+                game.addBall(ball1);
             });
 
     private final BufferedImage sprite;
     // TODO trocar estaticos em game para campos e passar por referencia pra todas entidades, ou
     // singleton dai aqui usar biconsumer
-    private final Consumer<Player> effect;
+    private final BiConsumer<Game, Player> effect;
 
-    PowerUpType(BufferedImage sprite, Consumer<Player> effect) {
+    PowerUpType(BufferedImage sprite, BiConsumer<Game, Player> effect) {
         this.sprite = sprite;
         this.effect = effect;
     }
 
-    public void apply(Player player) {
-        effect.accept(player);
+    public void apply(Game game, Player player) {
+        effect.accept(game, player);
     }
 
     public BufferedImage getSprite() {

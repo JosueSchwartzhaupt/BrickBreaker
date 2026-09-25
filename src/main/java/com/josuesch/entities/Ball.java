@@ -11,8 +11,8 @@ public class Ball extends Entity implements Movable {
     private double speed;
     private double angle;
 
-    public Ball(double x, double y, int width, int height, double angle) {
-        super(x, y, width, height);
+    public Ball(Game game, double x, double y, int width, int height, double angle) {
+        super(game, x, y, width, height);
         speed = NATURAL_SPEED;
         this.angle = angle;
     }
@@ -22,7 +22,7 @@ public class Ball extends Entity implements Movable {
 
         double newAngle = angle;
 
-        var collision = HitboxComparator.processCollision(this, Game.getCollidables());
+        var collision = HitboxComparator.processCollision(this, game.getCollidables());
         if (collision.isPresent()) {
             var coll = collision.get();
             relativeSpeed = coll.maxSpeed();
@@ -87,6 +87,6 @@ public class Ball extends Entity implements Movable {
 
     @Override
     public void dispawn() {
-        Game.removeBall(this);
+        game.removeBall(this);
     }
 }

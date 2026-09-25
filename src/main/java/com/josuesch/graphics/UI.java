@@ -6,8 +6,14 @@ import java.awt.Graphics;
 
 public class UI {
 
+    private final Game game;
+
+    public UI(Game game) {
+        this.game = game;
+    }
+
     public void render(Graphics g) {
-        if (!Game.hasStarted) {
+        if (game.hasNotStarted()) {
             g.setColor(new Color(0, 0, 0, 50));
             g.fillRect(0, 0, Game.WIDTH, Game.HEIGHT);
             g.setColor(new Color(0, 0, 0));
@@ -20,7 +26,7 @@ public class UI {
         g.setColor(new Color(255, 255, 255));
         g.drawString("Points: " + Game.player.getPoints(), 150 - 25, 14);
 
-        if (Game.gameOver) {
+        if (game.isGameOver()) {
             g.setColor(new Color(255, 0, 0, 50));
             g.fillRect(0, 0, Game.WIDTH, Game.HEIGHT);
             g.setColor(new Color(0, 0, 0));

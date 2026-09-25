@@ -8,9 +8,9 @@ import java.awt.image.BufferedImage;
 public abstract class Tile implements Placeble {
 
     public static final BufferedImage TILE_FLOOR =
-            Game.spritesheet.getSprite(16 * 1, 16 * 4, 16, 16);
+            Game.SPRITESHEET.getSprite(16 * 1, 16 * 4, 16, 16);
     public static final BufferedImage TILE_WALL =
-            Game.spritesheet.getSprite(16 * 0, 16 * 4, 16, 16);
+            Game.SPRITESHEET.getSprite(16 * 0, 16 * 4, 16, 16);
     public static final int SIZE = 16;
 
     protected BufferedImage sprite;

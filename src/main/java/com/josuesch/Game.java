@@ -29,25 +29,24 @@ public class Game extends Canvas implements Runnable, KeyListener {
     public static final int WIDTH = 272;
     public static final int HEIGHT = 336;
     public static final int SCALE = 2;
-
-    public static Random random;
+    public static final Spritesheet SPRITESHEET = new Spritesheet("/spritesheet.png");
+    public static final Random RANDOM = new Random();
 
     private BufferedImage image;
 
     public static Player player;
 
-    public static List<Entity> entities;
-    public static List<Ball> balls;
-    public static Spritesheet spritesheet;
-    public static World world;
-    public static UI ui;
+    private List<Entity> entities;
+    private List<Ball> balls;
+    private World world;
+    private UI ui;
 
-    public static boolean hasStarted = false;
-    public static boolean gameOver = false;
+    private boolean started = false;
+    private boolean gameOver = false;
 
-    private static final List<Placeble> collidablesBuffer = new ArrayList<>();
+    private final List<Placeble> collidablesBuffer = new ArrayList<>();
 
-    public static List<Placeble> getCollidables() {
+    public List<Placeble> getCollidables() {
         collidablesBuffer.clear();
         collidablesBuffer.addAll(World.getSolidTiles());
         collidablesBuffer.addAll(entities);
@@ -55,7 +54,6 @@ public class Game extends Canvas implements Runnable, KeyListener {
     }
 
     public Game() {
-        random = new Random();
         addKeyListener(this);
         setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
         initFrame();
@@ -65,15 +63,14 @@ public class Game extends Canvas implements Runnable, KeyListener {
         // Cria a tela de fundo onde vamos desenhar tudo;
         entities = new ArrayList<Entity>();
         balls = new ArrayList<Ball>();
-        spritesheet = new Spritesheet("/spritesheet.png");
-        player = new Player(100, 180, 32, 8);
+        player = new Player(this, 100, 180, 32, 8);
         entities.add(player);
-        world = new World("/map.png");
+        world = new World(this, "/map.png");
 
-        ui = new UI();
+        ui = new UI(this);
     }
 
-    public void initFrame() {
+    private void initFrame() {
         frame = new JFrame("BrickBreaker");
         frame.add(this);
         frame.setResizable(false);
@@ -101,9 +98,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     public void restart() {
         entities.clear();
-        player = new Player(100, 180, 32, 8);
+        player = new Player(this, 100, 180, 32, 8);
         entities.add(player);
-        world = new World("/map.png");
+        world = new World(this, "/map.png");
         gameOver = false;
     }
 
@@ -114,7 +111,6 @@ public class Game extends Canvas implements Runnable, KeyListener {
         double ns = 1000000000 / amountOfTicks;
         double delta = 0;
 
-        int frames = 0;
         double timer = System.currentTimeMillis();
         requestFocus();
         while (isRunning) {
@@ -125,19 +121,16 @@ public class Game extends Canvas implements Runnable, KeyListener {
             if (delta >= 1) {
                 tick();
                 render();
-                frames++;
                 delta--;
             }
             if (System.currentTimeMillis() - timer >= 1000) {
-                // System.out.println("FPS: "+frames);
-                frames = 0;
                 timer += 1000;
             }
         }
         stop();
     }
 
-    public void tick() {
+    private void tick() {
         //        for (Entity e : entities) {
         //            e.tick();
         //        }
@@ -147,10 +140,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
             e.tick();
         }
 
-        if (hasStarted && balls.isEmpty()) gameOver = true;
+        if (started && balls.isEmpty()) gameOver = true;
     }
 
-    public void render() {
+    private void render() {
         BufferStrategy bs = this.getBufferStrategy(); // pega a que ja tem
         if (bs == null) {
             this.createBufferStrategy(3); // se nao tem cria uma nova
@@ -184,19 +177,20 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (!hasStarted || gameOver) {
+        if (!started || gameOver) {
             // TODO refector 2 internal ifs
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                 if (gameOver) restart();
                 var ball =
                         new Ball(
+                                this,
                                 player.getX() + player.getWidth() / 2.0 - 2,
                                 player.getY() - 5,
                                 5,
                                 5,
                                 Math.toRadians(270));
                 addBall(ball);
-                if (!gameOver) hasStarted = true;
+                if (!gameOver) started = true;
             }
         } else {
             if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
@@ -218,13 +212,33 @@ public class Game extends Canvas implements Runnable, KeyListener {
         }
     }
 
-    public static void addBall(Ball ball) {
+    public void addBall(Ball ball) {
         entities.add(ball);
         balls.add(ball);
     }
 
-    public static void removeBall(Ball ball) {
+    public void removeBall(Ball ball) {
         entities.remove(ball);
         balls.remove(ball);
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public List<Entity> getEntities() {
+        return entities;
+    }
+
+    public List<Ball> getBalls() {
+        return balls;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public boolean hasNotStarted() {
+        return !started;
     }
 }

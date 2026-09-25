@@ -15,8 +15,8 @@ public class Player extends Entity implements Movable {
 
     private int points;
 
-    public Player(double x, double y, int width, int height) {
-        super(x, y, width, height);
+    public Player(Game game, double x, double y, int width, int height) {
+        super(game, x, y, width, height);
         speed = NATURAL_SPEED;
     }
 
@@ -32,7 +32,7 @@ public class Player extends Entity implements Movable {
         dy = speed * (vertical / mag);
 
         double relativeSpeed = speed;
-        var collision = HitboxComparator.processCollision(this, Game.getCollidables());
+        var collision = HitboxComparator.processCollision(this, game.getCollidables());
         if (collision.isPresent()) relativeSpeed = collision.get().maxSpeed();
         dx = relativeSpeed * (horizontal / mag);
         dy = relativeSpeed * (vertical / mag);

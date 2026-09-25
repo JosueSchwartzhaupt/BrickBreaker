@@ -17,7 +17,10 @@ public class World {
     private static final List<Placeble> solidTiles = new ArrayList<>();
     public static int WIDTH, HEIGHT;
 
-    public World(String path) {
+    private final Game game;
+
+    public World(Game game, String path) {
+        this.game = game;
         solidTiles.clear();
         try {
             BufferedImage map = ImageIO.read(getClass().getResource(path));
@@ -59,7 +62,7 @@ public class World {
                                             yy * 16,
                                             Tile.TILE_FLOOR,
                                             new Random().nextInt(4));
-                            Game.entities.add(new Block(xx * 16, yy * 16, 16, 16, 1));
+                            game.getEntities().add(new Block(game, xx * 16, yy * 16, 16, 16, 1));
                             break;
                         case 0xFF1C9900:
                             tiles[xx + (yy * WIDTH)] =
@@ -68,7 +71,7 @@ public class World {
                                             yy * 16,
                                             Tile.TILE_FLOOR,
                                             new Random().nextInt(4));
-                            Game.entities.add(new Block(xx * 16, yy * 16, 16, 16, 2));
+                            game.getEntities().add(new Block(game, xx * 16, yy * 16, 16, 16, 2));
                             break;
                         case 0xFFE4BC00:
                             tiles[xx + (yy * WIDTH)] =
@@ -77,7 +80,7 @@ public class World {
                                             yy * 16,
                                             Tile.TILE_FLOOR,
                                             new Random().nextInt(4));
-                            Game.entities.add(new Block(xx * 16, yy * 16, 16, 16, 3));
+                            game.getEntities().add(new Block(game, xx * 16, yy * 16, 16, 16, 3));
                             break;
                         case 0xFFCE6E00:
                             tiles[xx + (yy * WIDTH)] =
@@ -86,7 +89,7 @@ public class World {
                                             yy * 16,
                                             Tile.TILE_FLOOR,
                                             new Random().nextInt(4));
-                            Game.entities.add(new Block(xx * 16, yy * 16, 16, 16, 4));
+                            game.getEntities().add(new Block(game, xx * 16, yy * 16, 16, 16, 4));
                             break;
                         case 0xFFCE0000:
                             tiles[xx + (yy * WIDTH)] =
@@ -95,7 +98,7 @@ public class World {
                                             yy * 16,
                                             Tile.TILE_FLOOR,
                                             new Random().nextInt(4));
-                            Game.entities.add(new Block(xx * 16, yy * 16, 16, 16, 5));
+                            game.getEntities().add(new Block(game, xx * 16, yy * 16, 16, 16, 5));
                             break;
                         default:
                             tiles[xx + (yy * WIDTH)] =
@@ -114,8 +117,8 @@ public class World {
 
     public void render(Graphics g) {
         // TODO some old logic that needs trimming
-        int xstart = 0 >> 4;
-        int ystart = 0 >> 4;
+        int xstart = 0;
+        int ystart = 0;
 
         int xfinal = xstart + (Game.WIDTH >> 4) + 1;
         int yfinal = ystart + (Game.HEIGHT >> 4) + 1;
@@ -131,9 +134,5 @@ public class World {
 
     public static List<Placeble> getSolidTiles() {
         return solidTiles;
-    }
-
-    public static Tile[] getTiles() {
-        return tiles;
     }
 }

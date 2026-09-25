@@ -5,16 +5,16 @@ import java.awt.image.BufferedImage;
 
 public class Block extends Entity {
 
-    public static final BufferedImage BLOCK_1 = Game.spritesheet.getSprite(16 * 0, 16 * 0, 16, 16);
-    public static final BufferedImage BLOCK_2 = Game.spritesheet.getSprite(16 * 1, 16 * 0, 16, 16);
-    public static final BufferedImage BLOCK_3 = Game.spritesheet.getSprite(16 * 2, 16 * 0, 16, 16);
-    public static final BufferedImage BLOCK_4 = Game.spritesheet.getSprite(16 * 3, 16 * 0, 16, 16);
-    public static final BufferedImage BLOCK_5 = Game.spritesheet.getSprite(16 * 4, 16 * 0, 16, 16);
+    public static final BufferedImage BLOCK_1 = Game.SPRITESHEET.getSprite(16 * 0, 16 * 0, 16, 16);
+    public static final BufferedImage BLOCK_2 = Game.SPRITESHEET.getSprite(16 * 1, 16 * 0, 16, 16);
+    public static final BufferedImage BLOCK_3 = Game.SPRITESHEET.getSprite(16 * 2, 16 * 0, 16, 16);
+    public static final BufferedImage BLOCK_4 = Game.SPRITESHEET.getSprite(16 * 3, 16 * 0, 16, 16);
+    public static final BufferedImage BLOCK_5 = Game.SPRITESHEET.getSprite(16 * 4, 16 * 0, 16, 16);
 
     private int health;
 
-    public Block(double x, double y, int width, int height, int health) {
-        super(x, y, width, height);
+    public Block(Game game, double x, double y, int width, int height, int health) {
+        super(game, x, y, width, height);
         this.health = health;
         updateSprite();
     }
@@ -29,8 +29,8 @@ public class Block extends Entity {
     public void tick() {
         if (health <= 0) {
             this.dispawn();
-            if ((Game.random.nextInt(4) + 1) % 4 == 0)
-                Game.entities.add(new PowerUp(x + 2, y + 2, PowerUpType.MORE_BALLS));
+            if ((Game.RANDOM.nextInt(4) + 1) % 4 == 0)
+                game.getEntities().add(new PowerUp(game, x + 2, y + 2, PowerUpType.MORE_BALLS));
         }
     }
 

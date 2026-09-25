@@ -17,7 +17,10 @@ public abstract class Entity implements Drawable, Placeble {
 
     protected BufferedImage sprite;
 
-    public Entity(double x, double y, int width, int height) {
+    protected final Game game;
+
+    public Entity(Game game, double x, double y, int width, int height) {
+        this.game = game;
         this.x = x;
         this.y = y;
         this.width = width;
@@ -38,7 +41,7 @@ public abstract class Entity implements Drawable, Placeble {
 
     // TODO removing for the list coult cause some iteration issues
     public void dispawn() {
-        Game.entities.remove(this);
+        game.getEntities().remove(this);
     }
 
     public void render(Graphics g) {
