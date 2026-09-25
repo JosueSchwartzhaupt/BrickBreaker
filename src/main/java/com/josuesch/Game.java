@@ -133,8 +133,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
     }
 
     private void tick() {
-        for (Entity entity : entities) {
-            entity.tick();
+        for (int i = 0; i < entities.size(); i++) {
+            entities.get(i).tick();
         }
 
         if (!entitiesToRemove.isEmpty()) {
@@ -218,11 +218,6 @@ public class Game extends Canvas implements Runnable, KeyListener {
     public void addBall(Ball ball) {
         entities.add(ball);
         balls.add(ball);
-    }
-
-    public void removeBall(Ball ball) {
-        entities.remove(ball);
-        balls.remove(ball);
     }
 
     public Player getPlayer() {
