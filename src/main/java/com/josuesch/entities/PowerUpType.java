@@ -20,8 +20,6 @@ public enum PowerUpType {
             });
 
     private final BufferedImage sprite;
-    // TODO trocar estaticos em game para campos e passar por referencia pra todas entidades, ou
-    // singleton dai aqui usar biconsumer
     private final BiConsumer<Game, Player> effect;
 
     PowerUpType(BufferedImage sprite, BiConsumer<Game, Player> effect) {

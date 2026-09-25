@@ -34,7 +34,6 @@ public class Block extends Entity {
         }
     }
 
-    // TODO, importar como lista e acessar indice
     private void updateSprite() {
         switch (health) {
             case 1:

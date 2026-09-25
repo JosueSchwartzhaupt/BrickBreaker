@@ -116,7 +116,6 @@ public class World {
     }
 
     public void render(Graphics g) {
-        // TODO some old logic that needs trimming
         int xstart = 0;
         int ystart = 0;
 
