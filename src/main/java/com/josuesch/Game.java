@@ -25,17 +25,16 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     private Thread thread;
     private boolean isRunning = false;
-    private static JFrame frame;
 
     public static final int WIDTH = 272;
     public static final int HEIGHT = 336;
-    public static final int SCALE = 2;
+    public static final int SCALE = 3;
     public static final Spritesheet SPRITESHEET = new Spritesheet("/spritesheet.png");
     public static final Random RANDOM = new Random();
 
     private BufferedImage image;
 
-    public static Player player;
+    private Player player;
 
     private final List<Entity> entities = new ArrayList<>();
     private final List<Ball> balls = new ArrayList<>();
@@ -52,7 +51,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     public List<Placeble> getCollidables() {
         collidablesBuffer.clear();
-        collidablesBuffer.addAll(World.getSolidTiles());
+        collidablesBuffer.addAll(world.getSolidTiles());
         collidablesBuffer.addAll(entities);
         return collidablesBuffer;
     }
@@ -73,7 +72,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
     }
 
     private void initFrame() {
-        frame = new JFrame("BrickBreaker");
+        JFrame frame = new JFrame("BrickBreaker");
         frame.add(this);
         frame.setResizable(false);
         frame.pack();

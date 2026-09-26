@@ -12,14 +12,14 @@ import javax.imageio.ImageIO;
 
 public class World {
 
-    private static Tile[] tiles;
-    private static final List<Placeble> solidTiles = new ArrayList<>();
-    public static int WIDTH, HEIGHT;
+    private Tile[] tiles;
+    private final List<Placeble> solidTiles = new ArrayList<>();
+    public int WIDTH, HEIGHT;
 
     private final Game game;
 
-    public World(Game game, String path) {
-        this.game = game;
+    public World(Game g, String path) {
+        this.game = g;
         solidTiles.clear();
         try {
             BufferedImage map = ImageIO.read(getClass().getResource(path));
@@ -42,8 +42,8 @@ public class World {
                     }
 
                     if (pixel == 0xFF0026FF) {
-                        Game.player.setX(x - Game.player.getWidth() / 2.0);
-                        Game.player.setY(y);
+                        game.getPlayer().setX(x - game.getPlayer().getWidth() / 2.0);
+                        game.getPlayer().setY(y);
                     }
 
                     int health =
@@ -80,7 +80,7 @@ public class World {
         }
     }
 
-    public static List<Placeble> getSolidTiles() {
+    public List<Placeble> getSolidTiles() {
         return solidTiles;
     }
 }

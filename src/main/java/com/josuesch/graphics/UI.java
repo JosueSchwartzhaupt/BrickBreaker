@@ -8,8 +8,8 @@ import java.awt.image.BufferedImage;
 
 public class UI {
 
-    public static BufferedImage FULL_HEART = Game.SPRITESHEET.getSprite(16 * 0, 16 * 9, 16, 16);
-    public static BufferedImage EMPTY_HEART = Game.SPRITESHEET.getSprite(16 * 1, 16 * 9, 16, 16);
+    public static final BufferedImage FULL_HEART = Game.SPRITESHEET.getSprite(16 * 0, 16 * 9, 16, 16);
+    public static final BufferedImage EMPTY_HEART = Game.SPRITESHEET.getSprite(16 * 1, 16 * 9, 16, 16);
 
     private final Game game;
 
@@ -24,7 +24,7 @@ public class UI {
             else g.drawImage(EMPTY_HEART, 4 + 11 * i, 0, null);
         }
         g.setColor(new Color(255, 255, 255));
-        g.drawString("Points: " + Game.player.getPoints(), 150 - 25, 14);
+        g.drawString("Points: " + game.getPlayer().getPoints(), 150 - 25, 14);
 
         if (game.isGameOver()) {
             String text;

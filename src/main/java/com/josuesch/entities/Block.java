@@ -21,7 +21,7 @@ public class Block extends Entity {
 
     public void damage(int damage) {
         health = Math.max(0, health - damage);
-        Game.player.addPoints(100);
+        game.getPlayer().addPoints(100);
         updateSprite();
     }
 
