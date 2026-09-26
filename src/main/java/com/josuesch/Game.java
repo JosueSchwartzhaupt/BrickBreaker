@@ -150,7 +150,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
             player.damage(1);
             started = false;
         }
-        if (player.isDead()) gameOver = true;
+        if (player.isDead()) {
+            gameOver = true;
+            started = false;
+        }
     }
 
     private void render() {
@@ -223,8 +226,15 @@ public class Game extends Canvas implements Runnable, KeyListener {
     }
 
     public void addBall(Ball ball) {
+        if (balls.size() >= Ball.MAX_NUMBER_OF_BALLS) return;
         entities.add(ball);
         balls.add(ball);
+    }
+
+    public void addAllBalls(List<Ball> newBalls) {
+        if (balls.size() + newBalls.size() >= Ball.MAX_NUMBER_OF_BALLS) return;
+        entities.addAll(newBalls);
+        balls.addAll(newBalls);
     }
 
     public Player getPlayer() {

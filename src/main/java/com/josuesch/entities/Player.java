@@ -7,6 +7,8 @@ import com.josuesch.assets.Movable;
 public class Player extends Entity implements Movable {
     public static final double NATURAL_SPEED = 3;
     public static final int MAX_HEALTH = 3;
+    public static final int MAX_SIZE = Game.WIDTH - 64;
+    public static final int MAX_SPEED = 15;
 
     private boolean right, up, left, down;
 
@@ -84,10 +86,6 @@ public class Player extends Entity implements Movable {
         this.points += points;
     }
 
-    public void resetPoints() {
-        this.points = 0;
-    }
-
     public void removePoints(int points) {
         this.points -= points;
     }
@@ -111,5 +109,25 @@ public class Player extends Entity implements Movable {
     @Override
     public boolean isColidable() {
         return true;
+    }
+
+    public void expandPaddle(int size) {
+        int increase = Math.min(MAX_SIZE - width, size);
+        double gameCenter = Game.WIDTH / 2.0;
+        double paddleCenter = x + width / 2.0;
+
+        if (paddleCenter < gameCenter) {
+            width += increase;
+        } else if (paddleCenter > gameCenter) {
+            x -= increase;
+            width += increase;
+        } else {
+            x -= increase / 2.0;
+            width += increase;
+        }
+    }
+
+    public void increaseSpeed(int speed) {
+        this.speed = Math.min(speed + speed, MAX_SPEED);
     }
 }

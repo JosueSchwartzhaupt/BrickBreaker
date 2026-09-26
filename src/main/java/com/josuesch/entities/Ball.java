@@ -6,6 +6,7 @@ import com.josuesch.assets.HitboxComparator;
 import com.josuesch.assets.Movable;
 
 public class Ball extends Entity implements Movable {
+    public static final int MAX_NUMBER_OF_BALLS = 100;
     private static final double NATURAL_SPEED = 3;
 
     private double speed;
@@ -26,6 +27,8 @@ public class Ball extends Entity implements Movable {
         if (collision.isPresent()) {
             var coll = collision.get();
             relativeSpeed = coll.maxSpeed();
+            if (coll.hit() instanceof Player && HitboxComparator.isColiding(this, coll.hit()))
+                relativeSpeed = speed;
 
             newAngle = calculateBounceAngle(coll);
 

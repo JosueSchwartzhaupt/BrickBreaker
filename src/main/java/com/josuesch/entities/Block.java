@@ -30,7 +30,8 @@ public class Block extends Entity {
         if (health <= 0) {
             this.dispawn();
             if ((Game.RANDOM.nextInt(4) + 1) % 4 == 0)
-                game.getEntities().add(new PowerUp(game, x + 2, y + 2, PowerUpType.MORE_BALLS));
+                game.getEntities()
+                        .add(new PowerUp(game, x + 2, y + 2, PowerUpType.getRandomPowerUp()));
         }
     }
 
