@@ -8,7 +8,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import javax.imageio.ImageIO;
 
 public class World {
@@ -31,83 +30,38 @@ public class World {
             map.getRGB(0, 0, WIDTH, HEIGHT, pixels, 0, WIDTH);
             for (int xx = 0; xx < WIDTH; xx++) {
                 for (int yy = 0; yy < HEIGHT; yy++) {
-                    switch (pixels[xx + (yy * WIDTH)]) {
-                        case 0xFFFFFFFF: // Wall
-                            WallTile wall = new WallTile(xx * 16, yy * 16, Tile.TILE_WALL);
-                            tiles[xx + (yy * WIDTH)] = wall;
-                            solidTiles.add(wall);
-                            break;
-                        case 0xFF000000: // Floor
-                            tiles[xx + (yy * WIDTH)] =
-                                    new FloorTile(
-                                            xx * 16,
-                                            yy * 16,
-                                            Tile.TILE_FLOOR,
-                                            new Random().nextInt(4));
-                            break;
-                        case 0xFF0026FF: // Player
-                            tiles[xx + (yy * WIDTH)] =
-                                    new FloorTile(
-                                            xx * 16,
-                                            yy * 16,
-                                            Tile.TILE_FLOOR,
-                                            new Random().nextInt(4));
-                            Game.player.setX(xx * 16 - Game.player.getWidth() / 2.0);
-                            Game.player.setY(yy * 16);
-                            break;
-                        case 0xFF161D89: // EasyBlock
-                            tiles[xx + (yy * WIDTH)] =
-                                    new FloorTile(
-                                            xx * 16,
-                                            yy * 16,
-                                            Tile.TILE_FLOOR,
-                                            new Random().nextInt(4));
-                            game.getEntities().add(new Block(game, xx * 16, yy * 16, 16, 16, 1));
-                            break;
-                        case 0xFF1C9900:
-                            tiles[xx + (yy * WIDTH)] =
-                                    new FloorTile(
-                                            xx * 16,
-                                            yy * 16,
-                                            Tile.TILE_FLOOR,
-                                            new Random().nextInt(4));
-                            game.getEntities().add(new Block(game, xx * 16, yy * 16, 16, 16, 2));
-                            break;
-                        case 0xFFE4BC00:
-                            tiles[xx + (yy * WIDTH)] =
-                                    new FloorTile(
-                                            xx * 16,
-                                            yy * 16,
-                                            Tile.TILE_FLOOR,
-                                            new Random().nextInt(4));
-                            game.getEntities().add(new Block(game, xx * 16, yy * 16, 16, 16, 3));
-                            break;
-                        case 0xFFCE6E00:
-                            tiles[xx + (yy * WIDTH)] =
-                                    new FloorTile(
-                                            xx * 16,
-                                            yy * 16,
-                                            Tile.TILE_FLOOR,
-                                            new Random().nextInt(4));
-                            game.getEntities().add(new Block(game, xx * 16, yy * 16, 16, 16, 4));
-                            break;
-                        case 0xFFCE0000:
-                            tiles[xx + (yy * WIDTH)] =
-                                    new FloorTile(
-                                            xx * 16,
-                                            yy * 16,
-                                            Tile.TILE_FLOOR,
-                                            new Random().nextInt(4));
-                            game.getEntities().add(new Block(game, xx * 16, yy * 16, 16, 16, 5));
-                            break;
-                        default:
-                            tiles[xx + (yy * WIDTH)] =
-                                    new FloorTile(
-                                            xx * 16,
-                                            yy * 16,
-                                            Tile.TILE_FLOOR,
-                                            new Random().nextInt(4));
+                    int x = xx * 16;
+                    int y = yy * 16;
+                    int pixel = pixels[xx + (yy * WIDTH)];
+
+                    if (pixel == 0xFFFFFFFF) {
+                        WallTile wall = new WallTile(x, y, Tile.TILE_WALL);
+                        tiles[xx + (yy * WIDTH)] = wall;
+                        solidTiles.add(wall);
+                        continue;
                     }
+
+                    if (pixel == 0xFF0026FF) {
+                        Game.player.setX(x - Game.player.getWidth() / 2.0);
+                        Game.player.setY(y);
+                    }
+
+                    int health =
+                            switch (pixel) {
+                                case 0xFF161D89 -> 1;
+                                case 0xFF1C9900 -> 2;
+                                case 0xFFE4BC00 -> 3;
+                                case 0xFFCE6E00 -> 4;
+                                case 0xFFCE0000 -> 5;
+                                default -> 0;
+                            };
+
+                    if (health > 0) {
+                        game.addBlock(new Block(game, x, y, 16, 16, health));
+                    }
+
+                    tiles[xx + (yy * WIDTH)] =
+                            new FloorTile(x, y, Tile.TILE_FLOOR, Game.RANDOM.nextInt(4));
                 }
             }
         } catch (IOException e) {
@@ -116,17 +70,12 @@ public class World {
     }
 
     public void render(Graphics g) {
-        int xstart = 0;
-        int ystart = 0;
+        int xfinal = Math.min(WIDTH, (Game.WIDTH >> 4) + 1);
+        int yfinal = Math.min(HEIGHT, (Game.HEIGHT >> 4) + 1);
 
-        int xfinal = xstart + (Game.WIDTH >> 4) + 1;
-        int yfinal = ystart + (Game.HEIGHT >> 4) + 1;
-
-        for (int xx = xstart; xx <= xfinal; xx++) {
-            for (int yy = ystart; yy <= yfinal; yy++) {
-                if (xx < 0 || yy < 0 || xx >= WIDTH || yy >= HEIGHT) continue;
-                Tile tile = tiles[xx + (yy * WIDTH)];
-                tile.render(g);
+        for (int xx = 0; xx < xfinal; xx++) {
+            for (int yy = 0; yy < yfinal; yy++) {
+                tiles[xx + yy * WIDTH].render(g);
             }
         }
     }

@@ -2,6 +2,7 @@ package com.josuesch;
 
 import com.josuesch.assets.Placeble;
 import com.josuesch.entities.Ball;
+import com.josuesch.entities.Block;
 import com.josuesch.entities.Entity;
 import com.josuesch.entities.Player;
 import com.josuesch.graphics.Spritesheet;
@@ -36,8 +37,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     public static Player player;
 
-    private List<Entity> entities;
-    private List<Ball> balls;
+    private final List<Entity> entities = new ArrayList<>();
+    private final List<Ball> balls = new ArrayList<>();
+    private final List<Block> blocks = new ArrayList<>();
     private World world;
     private UI ui;
 
@@ -63,8 +65,6 @@ public class Game extends Canvas implements Runnable, KeyListener {
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 
         // Cria a tela de fundo onde vamos desenhar tudo;
-        entities = new ArrayList<Entity>();
-        balls = new ArrayList<Ball>();
         player = new Player(this, 100, 180, 32, 8);
         entities.add(player);
         world = new World(this, "/map.png");
@@ -101,6 +101,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
     public void restart() {
         entities.clear();
         balls.clear();
+        blocks.clear();
         player = new Player(this, 100, 180, 32, 8);
         entities.add(player);
         world = new World(this, "/map.png");
@@ -142,6 +143,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
             if (!entitiesToRemove.isEmpty()) {
                 entities.removeAll(entitiesToRemove);
                 balls.removeAll(entitiesToRemove);
+                blocks.removeAll(entitiesToRemove);
                 entitiesToRemove.clear();
             }
         }
@@ -150,7 +152,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
             player.damage(1);
             started = false;
         }
-        if (player.isDead()) {
+        if (player.isDead() || isWin()) {
             gameOver = true;
             started = false;
         }
@@ -225,18 +227,6 @@ public class Game extends Canvas implements Runnable, KeyListener {
         }
     }
 
-    public void addBall(Ball ball) {
-        if (balls.size() >= Ball.MAX_NUMBER_OF_BALLS) return;
-        entities.add(ball);
-        balls.add(ball);
-    }
-
-    public void addAllBalls(List<Ball> newBalls) {
-        if (balls.size() + newBalls.size() >= Ball.MAX_NUMBER_OF_BALLS) return;
-        entities.addAll(newBalls);
-        balls.addAll(newBalls);
-    }
-
     public Player getPlayer() {
         return player;
     }
@@ -249,8 +239,29 @@ public class Game extends Canvas implements Runnable, KeyListener {
         return balls;
     }
 
+    public void addBall(Ball ball) {
+        if (balls.size() >= Ball.MAX_NUMBER_OF_BALLS) return;
+        entities.add(ball);
+        balls.add(ball);
+    }
+
+    public void addAllBalls(List<Ball> newBalls) {
+        if (balls.size() + newBalls.size() >= Ball.MAX_NUMBER_OF_BALLS) return;
+        entities.addAll(newBalls);
+        balls.addAll(newBalls);
+    }
+
+    public void addBlock(Block block) {
+        entities.add(block);
+        blocks.add(block);
+    }
+
     public boolean isGameOver() {
         return gameOver;
+    }
+
+    public boolean isWin() {
+        return blocks.isEmpty();
     }
 
     public boolean hasNotStarted() {

@@ -27,24 +27,49 @@ public class UI {
         g.drawString("Points: " + Game.player.getPoints(), 150 - 25, 14);
 
         if (game.isGameOver()) {
-            g.setColor(new Color(255, 0, 0, 70));
-            g.fillRect(0, 0, Game.WIDTH, Game.HEIGHT);
-            g.setColor(new Color(255, 255, 255));
+            String text;
+            String text2;
+            String text3;
 
-            var text = "GAME OVER";
-            g.drawString(text, Game.WIDTH / 2 - (text.length() * 9) / 2, Game.HEIGHT / 2 - 15);
-            var text2 = "PRESS SPACE";
-            g.drawString(text2, Game.WIDTH / 2 - (text2.length() * 9) / 2, Game.HEIGHT / 2);
-            var text3 = "TO TRY AGAIN";
-            g.drawString(text3, Game.WIDTH / 2 - (text3.length() * 9) / 2, Game.HEIGHT / 2 + 15);
+            if (game.isWin()) {
+                text = "YOU WIN";
+                text2 = "PRESS SPACE";
+                text3 = "TO START A NEW GAME";
+                g.setColor(new Color(0, 255, 0, 70));
+            } else {
+                text = "GAME OVER";
+                text2 = "PRESS SPACE";
+                text3 = "TO TRY AGAIN";
+                g.setColor(new Color(255, 0, 0, 70));
+            }
+
+            g.fillRect(0, 0, Game.WIDTH, Game.HEIGHT);
+            g.setColor(Color.WHITE);
+
+            drawCentered(g, text, Game.HEIGHT / 2 - 15);
+            drawCentered(g, text2, Game.HEIGHT / 2);
+            drawCentered(g, text3, Game.HEIGHT / 2 + 15);
+
         } else if (game.hasNotStarted()) {
+            String text2;
+
+            if (game.getPlayer().getHealth() < Player.MAX_HEALTH) {
+                text2 = "TO SPAWN A NEW BALL";
+            } else {
+                text2 = "TO START";
+            }
+
             g.setColor(new Color(0, 0, 0, 70));
             g.fillRect(0, 0, Game.WIDTH, Game.HEIGHT);
-            g.setColor(new Color(255, 255, 255));
-            var text = "PRESS SPACE";
-            g.drawString(text, Game.WIDTH / 2 - (text.length() * 9) / 2, Game.HEIGHT / 2 - 15);
-            var text2 = "TO START";
-            g.drawString(text2, Game.WIDTH / 2 - (text2.length() * 9) / 2, Game.HEIGHT / 2);
+
+            g.setColor(Color.WHITE);
+            drawCentered(g, "PRESS SPACE", Game.HEIGHT / 2 - 15);
+            drawCentered(g, text2, Game.HEIGHT / 2);
         }
+    }
+
+    private void drawCentered(Graphics g, String text, int y) {
+        int x = Game.WIDTH / 2 - g.getFontMetrics().stringWidth(text) / 2;
+        g.drawString(text, x, y);
     }
 }
