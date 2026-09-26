@@ -42,7 +42,7 @@ public enum PowerUpType {
     INCREASE_SPEED(
             Game.SPRITESHEET.getSprite(16 * 4 + 1, 16 * 1 + 1, 14, 14),
             (game, player) -> {
-                player.increaseSpeed(1);
+                player.increaseSpeed(0.5);
             }),
     EXTRA_HEALTH(
             Game.SPRITESHEET.getSprite(16 * 5 + 1, 16 * 1 + 1, 14, 14),

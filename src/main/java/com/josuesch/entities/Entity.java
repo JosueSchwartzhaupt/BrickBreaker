@@ -1,13 +1,12 @@
 package com.josuesch.entities;
 
 import com.josuesch.Game;
-import com.josuesch.assets.Drawable;
 import com.josuesch.assets.Placeble;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-public abstract class Entity implements Drawable, Placeble {
+public abstract class Entity implements Placeble {
 
     protected double x;
     protected double y;
@@ -27,7 +26,6 @@ public abstract class Entity implements Drawable, Placeble {
         this.height = height;
     }
 
-    @Override
     public void draw(Graphics g) {
         if (sprite != null) {
             g.drawImage(sprite, (int) this.getX(), (int) this.getY(), null);

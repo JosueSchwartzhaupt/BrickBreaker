@@ -8,7 +8,7 @@ public class Player extends Entity implements Movable {
     public static final double NATURAL_SPEED = 3;
     public static final int MAX_HEALTH = 3;
     public static final int MAX_SIZE = Game.WIDTH - 64;
-    public static final int MAX_SPEED = 15;
+    public static final int MAX_SPEED = 10;
 
     private boolean right, up, left, down;
 
@@ -127,7 +127,7 @@ public class Player extends Entity implements Movable {
         }
     }
 
-    public void increaseSpeed(int speed) {
-        this.speed = Math.min(speed + speed, MAX_SPEED);
+    public void increaseSpeed(double additionalSpeed) {
+        this.speed = Math.min(speed + additionalSpeed, MAX_SPEED);
     }
 }
