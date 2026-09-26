@@ -8,8 +8,10 @@ import java.awt.image.BufferedImage;
 
 public class UI {
 
-    public static final BufferedImage FULL_HEART = Game.SPRITESHEET.getSprite(16 * 0, 16 * 9, 16, 16);
-    public static final BufferedImage EMPTY_HEART = Game.SPRITESHEET.getSprite(16 * 1, 16 * 9, 16, 16);
+    public static final BufferedImage FULL_HEART =
+            Game.SPRITESHEET.getSprite(16 * 0, 16 * 9, 16, 16);
+    public static final BufferedImage EMPTY_HEART =
+            Game.SPRITESHEET.getSprite(16 * 1, 16 * 9, 16, 16);
 
     private final Game game;
 

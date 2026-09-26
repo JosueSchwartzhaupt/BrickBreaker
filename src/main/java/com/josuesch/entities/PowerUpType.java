@@ -15,8 +15,26 @@ public enum PowerUpType {
                                 player.getY() - 5,
                                 5,
                                 5,
+                                Math.toRadians(225));
+                var ball2 =
+                        new Ball(
+                                game,
+                                player.getX() + player.getWidth() / 2.0 - 2,
+                                player.getY() - 5,
+                                5,
+                                5,
                                 Math.toRadians(270));
+                var ball3 =
+                        new Ball(
+                                game,
+                                player.getX() + player.getWidth() / 2.0 - 2,
+                                player.getY() - 5,
+                                5,
+                                5,
+                                Math.toRadians(315));
                 game.addBall(ball1);
+                game.addBall(ball2);
+                game.addBall(ball3);
             }),
     DOUBLE_BALLS(
             Game.SPRITESHEET.getSprite(16 * 2 + 1, 16 * 1 + 1, 14, 14),
@@ -37,7 +55,7 @@ public enum PowerUpType {
     EXPAND_PADDLE(
             Game.SPRITESHEET.getSprite(16 * 3 + 1, 16 * 1 + 1, 14, 14),
             (game, player) -> {
-                player.expandPaddle(4);
+                player.expandPaddle(6);
             }),
     INCREASE_SPEED(
             Game.SPRITESHEET.getSprite(16 * 4 + 1, 16 * 1 + 1, 14, 14),
