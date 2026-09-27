@@ -26,15 +26,6 @@ public abstract class Entity implements Placeble {
         this.height = height;
     }
 
-    public void draw(Graphics g) {
-        if (sprite != null) {
-            g.drawImage(sprite, (int) this.getX(), (int) this.getY(), null);
-            return;
-        }
-        g.setColor(new Color(255, 0, 0));
-        g.fillRect((int) Math.round(x), (int) Math.round(y), width, height);
-    }
-
     public void tick() {}
 
     public void dispawn() {
@@ -42,7 +33,12 @@ public abstract class Entity implements Placeble {
     }
 
     public void render(Graphics g) {
-        this.draw(g);
+        if (sprite != null) {
+            g.drawImage(sprite, (int) this.getX(), (int) this.getY(), null);
+            return;
+        }
+        g.setColor(new Color(255, 0, 0));
+        g.fillRect((int) Math.round(x), (int) Math.round(y), width, height);
     }
 
     @Override
