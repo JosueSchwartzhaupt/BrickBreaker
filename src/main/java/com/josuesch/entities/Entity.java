@@ -26,7 +26,7 @@ public abstract class Entity implements Placeble {
         this.height = height;
     }
 
-    public void tick() {}
+    public abstract void tick();
 
     public void dispawn() {
         game.queueRemoval(this);
