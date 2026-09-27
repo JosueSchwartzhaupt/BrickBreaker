@@ -49,13 +49,6 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     private final List<Entity> entitiesToRemove = new ArrayList<>();
 
-    public List<Placeble> getCollidables() {
-        collidablesBuffer.clear();
-        collidablesBuffer.addAll(world.getSolidTiles());
-        collidablesBuffer.addAll(entities);
-        return collidablesBuffer;
-    }
-
     public Game() {
         addKeyListener(this);
         setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
@@ -63,7 +56,6 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 
-        // Cria a tela de fundo onde vamos desenhar tudo;
         player = new Player(this, 100, 180, 32, 8);
         entities.add(player);
         world = new World(this, "/map.png");
@@ -92,7 +84,6 @@ public class Game extends Canvas implements Runnable, KeyListener {
         try {
             thread.join();
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -158,15 +149,14 @@ public class Game extends Canvas implements Runnable, KeyListener {
     }
 
     private void render() {
-        BufferStrategy bs = this.getBufferStrategy(); // pega a que ja tem
+        BufferStrategy bs = this.getBufferStrategy();
         if (bs == null) {
-            this.createBufferStrategy(3); // se nao tem cria uma nova
+            this.createBufferStrategy(3);
             return;
         }
-        // desenha na tela de fundo
+
         Graphics g = image.getGraphics();
 
-        // preenche a ultima tela, se nao ficaria mostrando o que nao foi alterado
         g.setColor(new Color(0, 0, 0));
         g.fillRect(0, 0, WIDTH, HEIGHT);
 
@@ -179,8 +169,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
         ui.render(g);
 
         g.dispose();
-        g = bs.getDrawGraphics();
+
         // bota essa tela de fundo no buffer(escalando para a tela)
+        g = bs.getDrawGraphics();
         g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
 
         bs.show();
@@ -236,6 +227,13 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     public List<Ball> getBalls() {
         return balls;
+    }
+
+    public List<Placeble> getCollidables() {
+        collidablesBuffer.clear();
+        collidablesBuffer.addAll(world.getSolidTiles());
+        collidablesBuffer.addAll(entities);
+        return collidablesBuffer;
     }
 
     public void addBall(Ball ball) {
