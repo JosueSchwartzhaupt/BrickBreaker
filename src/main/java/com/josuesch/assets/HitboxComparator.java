@@ -118,7 +118,7 @@ public class HitboxComparator {
         return placebles.stream()
                 .filter(Placeble::isColidable)
                 .filter(p -> !p.equals(m))
-                .filter(p -> willColide(m, p)) // Mantém sua otimização inicial
+                .filter(p -> willColide(m, p))
                 .map(p -> getCollision(m, p))
                 .min(Comparator.naturalOrder());
     }

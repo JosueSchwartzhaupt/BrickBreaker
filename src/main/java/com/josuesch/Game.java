@@ -170,8 +170,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
         g.dispose();
 
-        // bota essa tela de fundo no buffer(escalando para a tela)
         g = bs.getDrawGraphics();
+        // bota essa tela de fundo no buffer(escalando para a tela)
         g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
 
         bs.show();
